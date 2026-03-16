@@ -12,10 +12,10 @@
 c3po-model-version:     2026-03-15
 enterprise-model-rev:   R1.2a (anti-gerund rule in effect) + R5.3 (instance boundary authority)
 derived-from:           enterprise/model/enterprise-model.md
-                        enterprise/standards/ctrl-constraint-library.md
-                        enterprise/standards/ctrl-mechanism-catalog.md
-                        enterprise/standards/ctrl-interface-register.md
-                        enterprise/standards/ctrl-instance-governance-standard.md
+                        enterprise/standards/controls/ctrl-constraint-library.md
+                        enterprise/standards/controls/ctrl-mechanism-catalog.md
+                        enterprise/standards/interfaces/ctrl-interface-register.md
+                        enterprise/standards/controls/ctrl-instance-governance-standard.md
                         agents/*/[cxo]-context.md (all 9 — canonical templates)
 node-count:             540 leaf nodes (30 skill files complete)
 registry-complete:      A11 Finance, A12 Legal, A13 People, A14 Engineering, A3 Sales
@@ -457,12 +457,12 @@ All instance software projects are governed by the following C3PO standards (rea
 | Standard | File | What It Governs |
 |---|---|---|
 | Decomposition Rules | enterprise/model/ctrl-decomposition-rules.md | 17 rules + R5.3 instance boundary authority |
-| Skill Definition Standard | enterprise/standards/ctrl-skill-definition-standard.md | Domain sprint prompt; L1–L6 hierarchy; mandatory inclusions |
-| Constraint Library | enterprise/standards/ctrl-constraint-library.md | 120+ named constraint codes |
-| Mechanism Catalog | enterprise/standards/ctrl-mechanism-catalog.md | 74+ named mechanism codes |
-| Interface Register | enterprise/standards/ctrl-interface-register.md | 36+ cross-function and intercompany interface definitions |
-| Instance Governance | enterprise/standards/ctrl-instance-governance-standard.md | Layered authority model, exchange protocol, onboarding sequence |
-| SRS Standard | enterprise/standards/ctrl-srs-standard.md | SRS seed format, transfer protocol, instance ownership model |
+| Skill Definition Standard | enterprise/standards/controls/ctrl-skill-definition-standard.md | Domain sprint prompt; L1–L6 hierarchy; mandatory inclusions |
+| Constraint Library | enterprise/standards/controls/ctrl-constraint-library.md | 120+ named constraint codes |
+| Mechanism Catalog | enterprise/standards/controls/ctrl-mechanism-catalog.md | 74+ named mechanism codes |
+| Interface Register | enterprise/standards/interfaces/ctrl-interface-register.md | 36+ cross-function and intercompany interface definitions |
+| Instance Governance | enterprise/standards/controls/ctrl-instance-governance-standard.md | Layered authority model, exchange protocol, onboarding sequence |
+| SRS Standard | enterprise/standards/controls/ctrl-srs-standard.md | SRS seed format, transfer protocol, instance ownership model |
 
 ---
 
@@ -487,7 +487,7 @@ These interfaces define the boundaries between C3PO (the architect), Ouborobo (t
 |---|---|---|---|
 | IF-A0-10 | A33 CRM → A1333 Payroll | Commission/SPiFF Payout | Cross-A0-boundary; precedent established SPR-013 |
 
-Full interface register: `enterprise/standards/ctrl-interface-register.md`
+Full interface register: `enterprise/standards/interfaces/ctrl-interface-register.md`
 
 ---
 
