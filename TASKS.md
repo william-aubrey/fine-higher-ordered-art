@@ -2,28 +2,48 @@
 
 ## Backlog
 
-### Getting Started
-- [ ] Review SRS seed (`specs/srs-fine-higher-ordered-art.md`) — validate or revise initial requirements
-- [ ] Review governance documents in `governance/` — confirm understanding of constraints and approval gates
-- [ ] Acknowledge onboarding exchange via `/exchange write acknowledgment`
-
 ### Product Definition (A31)
-- [ ] Define tiered-bid auction mechanism — tier structure, timing, reserve strategy, buyer experience flow
+- [ ] Phase 3 SDD: Product Design — site layout, page templates, data schemas, gallery scroller component
+- [ ] Phase 4 SDD: Technical Architecture — services, APIs, data model, deployment
 - [ ] Define artist website requirements — portfolio display, about/statement, exhibition history, contact
-- [ ] Identify target buyer personas (ICP) and Jobs to Be Done (JTBD)
 - [ ] Build feature roadmap from ICP/JTBD output
+- [ ] Resolve pre-launch open questions (see `specs/spec-v1-00-index.md` consolidated list)
 
 ### Technical
 - [ ] Evaluate tech stack — static site + serverless auction logic vs. full web app
 - [ ] Select payment processor (Stripe, Square, etc.) — must be PCI-compliant per HC-05
 - [ ] Select hosting / deployment platform
-- [ ] Design shipping workflow — art-safe packaging, carrier selection, insurance
+- [ ] Design real-time bid status system (first-come-first-served, payment-in-progress states)
+- [ ] Implement Open Graph / social meta tags for link previews (Spectator/Journalist discovery)
+
+### Legal / Fiduciary (William — external action required)
+- [ ] Find securities counsel — deliver `library/legal/securities-opinion-request.md` as RFP (**hard prerequisite**)
+- [ ] Find fiduciary lawyer — deliver `library/legal/fiduciary-rfp.md` as RFP (**hard prerequisite**)
+- [ ] Determine credit card / wire transfer threshold (fiduciary to advise)
+- [ ] Determine accepted payment methods by amount (fiduciary to advise)
+- [ ] Draft terms of service (fiduciary to draft, securities counsel to review)
+- [ ] Decide image usage rights for press — HC-01 retains IP, but press needs images for coverage
+
+### Art / Content (William — physical action required)
+- [ ] Inventory all 52 paintings with exact dimensions — determines aggregate threshold and all tier prices (**blocks launch**)
+- [ ] Photograph existing paintings (high-resolution, color-accurate)
+- [ ] Write artist statement
+- [ ] Write per-painting descriptions / statements
+- [ ] Design certificate of authenticity format (physical, hand-signed)
+- [ ] Record video content — artist and others discussing paintings
+- [ ] Research art-safe shipping boxes — FedEx and UPS options and pricing by painting size
 
 ### A2 Production Decomposition
 - [ ] Decompose A2 Production into instance-specific sub-functions based on refined spec
 
-### Art / Content
-- [ ] Photograph existing paintings (high-resolution, color-accurate)
-- [ ] Write artist statement
-- [ ] Write per-painting descriptions / statements
-- [ ] Design certificate of authenticity format
+## Completed
+- [x] Review SRS seed — validated during auction mechanism design — 2026-03-15
+- [x] Review governance documents — constraints and approval gates reviewed — 2026-03-15
+- [x] Acknowledge onboarding exchange via `/exchange write acknowledgment` — 2026-03-15
+- [x] Define tiered-bid auction mechanism — full spec at `specs/auction-mechanism.md` — 2026-03-15
+- [x] Run ICP/JTBD framework exercise — 8 personas, 8 use case families, matrix — `specs/spec-v1-01-icp-jtbd.md` — 2026-03-15
+- [x] Create spec index — `specs/spec-v1-00-index.md` — 2026-03-15
+- [x] Write user journey docs (Phase 2 SDD) — 6 documents covering all 8 personas — 2026-03-15
+- [x] Update auction mechanism spec — sequential tier progression replaces direct high-tier bidding (§4.5) — 2026-03-15
+- [x] Draft securities opinion request — `library/legal/securities-opinion-request.md` — 2026-03-15
+- [x] Draft fiduciary lawyer RFP — `library/legal/fiduciary-rfp.md` — 2026-03-15
