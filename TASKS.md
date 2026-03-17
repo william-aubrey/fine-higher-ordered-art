@@ -3,15 +3,16 @@
 ## Backlog
 
 ### Product Definition (A31)
-- [ ] Phase 3 SDD: Product Design — site layout, page templates, data schemas, gallery scroller component
-- [ ] Phase 4 SDD: Technical Architecture — services, APIs, data model, deployment
-- [ ] Define artist website requirements — portfolio display, about/statement, exhibition history, contact
+- [ ] Phase 3 SDD: Site Design (`spec-v1-03a-site-design.md`) — every page template, component, UX element, responsive behavior
+- [ ] Phase 3 SDD: Data and State (`spec-v1-03b-data-and-state.md`) — schemas, auction state machine, notification events
+- [ ] Phase 4 SDD: Technical Architecture (`spec-v1-04-technical-architecture.md`) — services, APIs, data model, deployment
+- [ ] Phase 5: Simulate — two-pass validation (sprint-level + function-level)
 - [ ] Build feature roadmap from ICP/JTBD output
 - [ ] Resolve pre-launch open questions (see `specs/spec-v1-00-index.md` consolidated list)
 
 ### Technical
 - [ ] Evaluate tech stack — static site + serverless auction logic vs. full web app
-- [ ] Select payment processor (Stripe, Square, etc.) — must be PCI-compliant per HC-05
+- [ ] Select payment processor (Stripe, Square, etc.) — must be PCI-compliant per HC-05; Stripe viable for physical art
 - [ ] Select hosting / deployment platform
 - [ ] Design real-time bid status system (first-come-first-served, payment-in-progress states)
 - [ ] Implement Open Graph / social meta tags for link previews (Spectator/Journalist discovery)
@@ -40,10 +41,15 @@
 - [x] Review SRS seed — validated during auction mechanism design — 2026-03-15
 - [x] Review governance documents — constraints and approval gates reviewed — 2026-03-15
 - [x] Acknowledge onboarding exchange via `/exchange write acknowledgment` — 2026-03-15
-- [x] Define tiered-bid auction mechanism — full spec at `specs/auction-mechanism.md` — 2026-03-15
+- [x] Define tiered-bid auction mechanism — full spec at `library/auction-mechanism.md` — 2026-03-15
 - [x] Run ICP/JTBD framework exercise — 8 personas, 8 use case families, matrix — `specs/spec-v1-01-icp-jtbd.md` — 2026-03-15
 - [x] Create spec index — `specs/spec-v1-00-index.md` — 2026-03-15
 - [x] Write user journey docs (Phase 2 SDD) — 6 documents covering all 8 personas — 2026-03-15
 - [x] Update auction mechanism spec — sequential tier progression replaces direct high-tier bidding (§4.5) — 2026-03-15
 - [x] Draft securities opinion request — `library/legal/securities-opinion-request.md` — 2026-03-15
 - [x] Draft fiduciary lawyer RFP — `library/legal/fiduciary-rfp.md` — 2026-03-15
+- [x] Apply C3PO exchange: spec skill, spec profiles, enterprise context v3, SDD process guide — 2026-03-16
+- [x] Adopt ICOM governance folder restructure — 2026-03-16
+- [x] Acknowledge spec-skill-icom-amendment exchange — 2026-03-16
+- [x] Initialize /spec lifecycle — progress tracker, phase mapping, Phases 1–2 validated — 2026-03-16
+- [x] Archive auction-mechanism.md and SRS seed to library/ — 2026-03-16

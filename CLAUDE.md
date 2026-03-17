@@ -32,17 +32,21 @@ FHOA is a software / website that hosts a custom site for selling a collection o
 4. **HC-05:** Customer data encrypted; PCI-compliant payment processing; no direct storage of payment credentials
 5. **HC-07:** Art-safe shipping required (rigid packaging, acid-free wrapping, insured)
 
-Full constraints: `governance/ctrl-instance-constraints.md`
+Full constraints: `governance/controls/ctrl-instance-constraints.md`
 
 ## Project Structure
 
 ```
-governance/          Read-only Layer 1 documents (from C3PO)
-specs/               Product specification (instance-owned, editable)
-  srs-fine-higher-ordered-art.md   SRS seed — expand through A31 work
-exchange/            Governance communication records (immutable)
-reference/idef0/     Enterprise IDEF0 reference library
-library/sprints/     Sprint history
+governance/              Read-only Layer 1 documents (from C3PO)
+  controls/              Constraints, approval gates, enterprise context, spec profiles
+  mechanisms/            Process guides (SDD methodology)
+specs/                   Product specification (instance-owned, editable)
+  spec-progress.md         Spec lifecycle progress tracker
+  spec-v1-00-index.md      Reading order + key decisions
+exchange/                Governance communication records (immutable)
+reference/idef0/         Enterprise IDEF0 reference library
+library/sprints/         Sprint history
+library/log/             Reasoning logs
 ```
 
 ## Skills
@@ -51,6 +55,9 @@ library/sprints/     Sprint history
 - `/sprint close` — End a work session (writes narrative, updates tasks)
 - `/exchange write` — Author an outbound governance exchange package
 - `/exchange read` — Read the most recent inbound exchange
+- `/spec start` — Initialize a spec suite for the project
+- `/spec [who|how|what|build|simulate]` — Execute a spec phase
+- `/spec status` — Show spec progress dashboard
 
 ## NAICS
 
@@ -61,12 +68,13 @@ library/sprints/     Sprint history
 ## Current Status
 
 **Onboarded:** 2026-03-15
-**Stage:** Pre-production — SRS seed in `specs/`, awaiting A31 product management
+**Stage:** A31 Product Management — Phases 1–2 complete, Phase 3 (Product Design) next
+**Spec progress:** `specs/spec-progress.md`
 
 ## Next Steps
 
-1. Review SRS seed in `specs/srs-fine-higher-ordered-art.md`
-2. Define the tiered-bid auction mechanism (tier structure, timing, buyer experience)
-3. Evaluate tech stack (static site + serverless auction vs. full web app)
-4. Begin A31 Product Management: ICP/JTBD research for art buyers
-5. Decompose A2 Production based on refined requirements
+1. Begin Phase 3 SDD with `/spec what` — detailed site design (`spec-v1-03a-site-design.md`)
+2. Complete Phase 3 data and state specification (`spec-v1-03b-data-and-state.md`)
+3. Phase 4 SDD: Technical Architecture
+4. Phase 5: Simulate (two-pass validation)
+5. Evaluate tech stack and select payment processor (Phase 4 decisions)
