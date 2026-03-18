@@ -87,7 +87,3 @@ system/                   Operational records
 3. Phase 4 SDD: Technical Architecture
 4. Phase 5: Simulate (two-pass validation)
 5. Evaluate tech stack and select payment processor (Phase 4 decisions)
-
-## Active Sprint
-**Log:** `system/log/2026-03-18.md`
-After every response, append a 1-2 line reasoning entry to the log. Get the timestamp from `powershell -Command "Get-Date -Format 'HH:mm'"` (or `date +%H:%M`). Include `[UPDATED filename]` brackets for any files changed. Write your reasoning — what you did, why, what it connects to, what concerned you. No categorization tags. See sprint skill §Log for format.
