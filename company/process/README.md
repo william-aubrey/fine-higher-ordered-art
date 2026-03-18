@@ -13,8 +13,8 @@ company/process/
 
 ## Authority
 
-Files in `controls/` and `interfaces/` are **read-only**. They are authored and maintained by C3PO (the enterprise governance system). Changes originate in C3PO and are delivered via the exchange protocol.
+Files in `controls/` and `interfaces/` are **C3PO-seeded** — delivered via exchange and installed here by this instance. Per the boundary-enforcement governance model (v2), this instance owns all files in its repo. Compliance is measured at the A-0 boundary: produce the defined Outputs, honor the defined Constraints, maintain the defined Interfaces.
 
-To propose changes, use `/exchange write proposal` to send a proposal to C3PO.
+Mechanisms may be adapted for this domain. Constraints and interfaces should not be altered unilaterally — changes that affect the A-0 boundary should be communicated via `/exchange write proposal`.
 
 Source: `G:\My Drive\A0 C3PO`
