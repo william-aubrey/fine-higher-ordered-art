@@ -24,12 +24,12 @@
 
 ## Supporting Documents (Archived)
 
-These documents predate the spec suite. Their content is authoritative and will be absorbed into Phase 3 and Phase 4 specs. Originals archived in `library/`.
+These documents predate the spec suite. Their content is authoritative and will be absorbed into Phase 3 and Phase 4 specs. Originals archived alongside the active specs.
 
 | Document | Original Location | Archived To | What It Covers |
 |---|---|---|---|
-| `auction-mechanism.md` | `specs/` | `library/auction-mechanism.md` | Tier structure, bidding rules, outbid rewards, WTA, settlement, thresholds |
-| `srs-fine-higher-ordered-art.md` | `specs/` | `library/srs-fine-higher-ordered-art.md` | C3PO onboarding seed — superseded by spec suite |
+| `auction-mechanism.md` | `specs/` | `company/production/auction-platform/specs/auction-mechanism.md` | Tier structure, bidding rules, outbid rewards, WTA, settlement, thresholds |
+| `srs-fine-higher-ordered-art.md` | `specs/` | `company/production/auction-platform/specs/srs-fine-higher-ordered-art.md` | C3PO onboarding seed — superseded by spec suite |
 
 ## Phase 3 Scope — Site Design (03a)
 

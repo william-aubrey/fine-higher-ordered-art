@@ -34,9 +34,9 @@ Determine which repo you are in:
    - Outbound exchanges are written to: `instances/[entity]/exchange/`
    - Inbound exchanges are read from: `instances/[entity]/exchange/` (where `direction` in MANIFEST points toward C3PO)
 
-2. **Instance context** — `governance/` folder exists at project root (and no `instances/` folder).
-   - Outbound exchanges are written to: `exchange/`
-   - Inbound exchanges are read from: `exchange/` (where `direction` in MANIFEST points toward the instance)
+2. **Instance context** — `company/` folder exists at project root (and no `instances/` folder).
+   - Outbound exchanges are written to: `system/exchange/`
+   - Inbound exchanges are read from: `system/exchange/` (where `direction` in MANIFEST points toward the instance)
 
 3. **Ambiguous** — neither signal is clear. Ask the user which context applies.
 
@@ -66,6 +66,7 @@ Maps instance folder names to their repo paths on disk. Used for delivery in Ste
 
 | Instance Folder | Repo Path |
 |---|---|
+| `fine-higher-ordered-art` | `G:\My Drive\A0 Fine Higher Ordered Art` |
 | `mountain-cabin-co` | `G:\My Drive\A0 Mountain Cabin Co` |
 | `ouborobo` | `G:\My Drive\A0 Ouborobo` |
 | `trading-card-co` | `G:\My Drive\A0 Trading Card Co` |
@@ -95,9 +96,9 @@ Check if the user specified a type in the invocation (e.g., `/exchange write ame
 
 > What type of exchange is this?
 > - **onboarding** — Initial governance package to a new instance
-> - **proposal** — Proposing a change to Layer 1 documents or reporting a structural gap
+> - **proposal** — Proposing a change to boundary documents or reporting a structural gap
 > - **approval** — Approving an instance proposal
-> - **amendment** — Updating Layer 1 documents (constraints, interfaces, approval gates)
+> - **amendment** — Updating boundary documents (constraints, interfaces, approval gates)
 > - **status** — Periodic status report or model update
 > - **acknowledgment** — Confirming receipt and application of an exchange package
 
@@ -122,15 +123,20 @@ Based on the exchange type, purpose, and conversation context, determine what fi
 | Type | Typical Payload |
 |---|---|
 | `onboarding` | `ctrl-enterprise-context.md`, `ctrl-instance-constraints.md`, `ctrl-instance-interfaces.md`, `ctrl-approval-gates.md`, `srs-seed-[entity].md` |
-| `amendment` | Updated Layer 1 doc(s) — constraints, interfaces, approval gates, enterprise context |
+| `amendment` | Updated boundary doc(s) — constraints, interfaces, approval gates, enterprise context |
 | `proposal` | Problem statement document, proposed changes |
-| `approval` | Updated Layer 1 doc(s) reflecting the approved proposal |
+| `approval` | Updated document(s) reflecting the approved proposal |
 | `status` | Status report, model updates, sprint completion reports |
 | `acknowledgment` | MANIFEST only (payload is the acknowledgment itself) |
 
 Use the conversation context to determine the specific files. If uncertain, propose a file list and confirm with the user before proceeding.
 
-**Source files in C3PO context:** When the payload includes enterprise documents (enterprise context, constraint library, skill files, etc.), copy from the canonical source in the C3PO repo. Always use the latest version.
+**Source files in C3PO context:** When the payload includes enterprise documents (enterprise context, constraint library, skill files, etc.), copy from the canonical source in the C3PO repo. Source locations:
+- Governance documents: `enterprise/process/controls/`, `enterprise/process/interfaces/`, `enterprise/process/mechanisms/`
+- Skill files: `enterprise/registry/`
+- Model files: `enterprise/model/`
+
+Always use the latest version.
 
 ---
 
@@ -151,7 +157,7 @@ Fallback (Git Bash): `date +%Y-%m-%d-%H%M` (without the `-u` flag — `-u` gives
 
 **Folder path:**
 - C3PO context: `instances/[entity]/exchange/YYYY-MM-DD-HHMM-[slug]/`
-- Instance context: `exchange/YYYY-MM-DD-HHMM-[slug]/`
+- Instance context: `system/exchange/YYYY-MM-DD-HHMM-[slug]/`
 
 Create the folder.
 
@@ -184,8 +190,8 @@ alternatives. Written for a reader who was not present for the decision.]
 
 ## Contents
 
-1. `filename.md` — [one-line description]; copy to [target path in receiving repo]
-2. `filename.md` — [one-line description]; copy to [target path]
+1. `filename.md` — [one-line description]; install to [target path in receiving repo]
+2. `filename.md` — [one-line description]; install to [target path]
 
 ## Required Actions
 
@@ -225,8 +231,8 @@ Run through this checklist (derived from `ctrl-instance-governance-standard.md` 
 - [ ] Exchange type is valid
 - [ ] Folder name follows `YYYY-MM-DD-HHMM-[slug]` convention with timestamp
 - [ ] Every file listed in Contents exists in the folder
-- [ ] Layer 1 documents (if included) do not contain product specification
-- [ ] Layer 1 constraints reference specific codes from the constraint library
+- [ ] Boundary documents define constraints and interfaces, not product specification
+- [ ] Constraints reference specific codes from the constraint library
 - [ ] Acknowledgment request is included in Required Actions (if governance docs updated)
 
 Report the exchange package summary:
@@ -249,15 +255,15 @@ After the Principal reviews and approves the package, deliver it automatically.
 
 **C3PO context (outbound to instance):**
 1. Look up the instance's repo path from the Instance Repo Registry (Step 1).
-2. Verify the target repo's `exchange/` folder exists. If not, create it.
+2. Verify the target repo's `system/exchange/` folder exists. If not, create it.
 3. Copy the entire exchange folder:
    ```bash
-   cp -r "instances/[entity]/exchange/[folder-name]/" "[repo-path]/exchange/[folder-name]/"
+   cp -r "instances/[entity]/exchange/[folder-name]/" "[repo-path]/system/exchange/[folder-name]/"
    ```
 4. Verify the copy by listing the delivered folder contents.
 5. Report:
    ```
-   Delivered to: [repo-path]/exchange/[folder-name]/
+   Delivered to: [repo-path]/system/exchange/[folder-name]/
    Files: [count] ([list filenames])
 
    The instance can process this with: /exchange read
@@ -266,7 +272,7 @@ After the Principal reviews and approves the package, deliver it automatically.
 **Instance context (outbound to C3PO):**
 1. Copy the exchange folder to C3PO:
    ```bash
-   cp -r "exchange/[folder-name]/" "G:\My Drive\A0 C3PO\instances\[this-instance]\exchange\[folder-name]/"
+   cp -r "system/exchange/[folder-name]/" "G:\My Drive\A0 C3PO\instances\[this-instance]\exchange\[folder-name]/"
    ```
 2. Verify and report as above.
 
@@ -285,7 +291,7 @@ After the Principal reviews and approves the package, deliver it automatically.
 - If no instance specified: scan all `instances/*/exchange/` folders.
 
 **Instance context:**
-- Scan `exchange/` for all exchange folders.
+- Scan `system/exchange/` for all exchange folders.
 
 Sort folders chronologically (lexicographic sort on folder names handles this since they are timestamp-prefixed).
 
@@ -325,7 +331,7 @@ Present a summary:
 ### Recommended Response
 [Based on the exchange type and contents, suggest what action to take next:
 - For proposals: evaluate and respond with approval/amendment/counter-proposal
-- For amendments: apply the changes to governance/ and acknowledge
+- For amendments: apply the changes to company/process/ and acknowledge
 - For acknowledgments: update tracking tasks (close CAO-XXX)
 - For status: note any items requiring action]
 ```

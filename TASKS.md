@@ -3,12 +3,12 @@
 ## Backlog
 
 ### Product Definition (A31)
-- [ ] Phase 3 SDD: Site Design (`spec-v1-03a-site-design.md`) — every page template, component, UX element, responsive behavior
-- [ ] Phase 3 SDD: Data and State (`spec-v1-03b-data-and-state.md`) — schemas, auction state machine, notification events
-- [ ] Phase 4 SDD: Technical Architecture (`spec-v1-04-technical-architecture.md`) — services, APIs, data model, deployment
+- [ ] Phase 3 SDD: Site Design (`company/production/auction-platform/specs/spec-v1-03a-site-design.md`) — every page template, component, UX element, responsive behavior
+- [ ] Phase 3 SDD: Data and State (`company/production/auction-platform/specs/spec-v1-03b-data-and-state.md`) — schemas, auction state machine, notification events
+- [ ] Phase 4 SDD: Technical Architecture (`company/production/auction-platform/specs/spec-v1-04-technical-architecture.md`) — services, APIs, data model, deployment
 - [ ] Phase 5: Simulate — two-pass validation (sprint-level + function-level)
 - [ ] Build feature roadmap from ICP/JTBD output
-- [ ] Resolve pre-launch open questions (see `specs/spec-v1-00-index.md` consolidated list)
+- [ ] Resolve pre-launch open questions (see `company/production/auction-platform/specs/spec-v1-00-index.md` consolidated list)
 
 ### Technical
 - [ ] Evaluate tech stack — static site + serverless auction logic vs. full web app
@@ -18,8 +18,8 @@
 - [ ] Implement Open Graph / social meta tags for link previews (Spectator/Journalist discovery)
 
 ### Legal / Fiduciary (William — external action required)
-- [ ] Find securities counsel — deliver `library/legal/securities-opinion-request.md` as RFP (**hard prerequisite**)
-- [ ] Find fiduciary lawyer — deliver `library/legal/fiduciary-rfp.md` as RFP (**hard prerequisite**)
+- [ ] Find securities counsel — deliver `agents/clo/library/securities-opinion-request.md` as RFP (**hard prerequisite**)
+- [ ] Find fiduciary lawyer — deliver `agents/clo/library/fiduciary-rfp.md` as RFP (**hard prerequisite**)
 - [ ] Determine credit card / wire transfer threshold (fiduciary to advise)
 - [ ] Determine accepted payment methods by amount (fiduciary to advise)
 - [ ] Draft terms of service (fiduciary to draft, securities counsel to review)

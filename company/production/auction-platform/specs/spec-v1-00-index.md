@@ -7,7 +7,7 @@
 
 ## Reading Order
 
-The numbered spec documents follow the Spec-Driven Development methodology (see `governance/mechanisms/spec-driven-development.md`). Read them in order — each phase feeds the next. Progress tracked in `spec-progress.md`.
+The numbered spec documents follow the Spec-Driven Development methodology (see `company/process/mechanisms/spec-driven-development.md`). Read them in order — each phase feeds the next. Progress tracked in `spec-progress.md`.
 
 | # | Document | Phase | Status |
 |---|---|---|---|
@@ -23,21 +23,21 @@ The numbered spec documents follow the Spec-Driven Development methodology (see 
 | 03b | `spec-v1-03b-data-and-state.md` | WHAT: Data schemas and auction state | Not started |
 | 04 | `spec-v1-04-technical-architecture.md` | BUILD: Infrastructure, APIs, deployment | Not started |
 
-### Archived References (in `library/`)
+### Archived References
 
-These documents were foundational to the spec suite. Their content is absorbed into the numbered specs. Originals preserved as historical references.
-
-| Document | What it is |
-|---|---|
-| `library/auction-mechanism.md` | Complete tiered-bid auction mechanism — tiers, thresholds, reward mechanic, WTA, settlement. Content absorbed into Phases 3–4. |
-| `library/srs-fine-higher-ordered-art.md` | SRS seed from C3PO onboarding — superseded by the spec suite |
-
-### Process Artifacts (in `library/`)
+These documents were foundational to the spec suite. Their content is absorbed into the numbered specs. Originals preserved as historical references alongside active specs.
 
 | Document | What it is |
 |---|---|
-| `library/legal/securities-opinion-request.md` | RFP for securities counsel — Howey test review of reward mechanic |
-| `library/legal/fiduciary-rfp.md` | RFP for fiduciary lawyer — escrow, payments, contracts, terms of service |
+| `auction-mechanism.md` | Complete tiered-bid auction mechanism — tiers, thresholds, reward mechanic, WTA, settlement. Content absorbed into Phases 3–4. |
+| `srs-fine-higher-ordered-art.md` | SRS seed from C3PO onboarding — superseded by the spec suite |
+
+### Process Artifacts
+
+| Document | What it is |
+|---|---|
+| `agents/clo/library/securities-opinion-request.md` | RFP for securities counsel — Howey test review of reward mechanic |
+| `agents/clo/library/fiduciary-rfp.md` | RFP for fiduciary lawyer — escrow, payments, contracts, terms of service |
 
 ---
 
@@ -128,9 +128,9 @@ All eight personas are present from day one. The auction is a single one-time ev
 
 | Document | Location |
 |---|---|
-| Instance constraints (HC-01 through HC-08) | `governance/controls/ctrl-instance-constraints.md` |
-| Approval gates | `governance/controls/ctrl-approval-gates.md` |
-| Enterprise context | `governance/controls/ctrl-enterprise-context.md` |
-| Instance interfaces | `governance/controls/ctrl-instance-interfaces.md` |
-| Spec profiles (domain phase guidance) | `governance/controls/ctrl-spec-profiles.md` |
-| Spec-Driven Development process | `governance/mechanisms/spec-driven-development.md` |
+| Instance constraints (HC-01 through HC-08) | `company/process/controls/ctrl-instance-constraints.md` |
+| Approval gates | `company/process/controls/ctrl-approval-gates.md` |
+| Enterprise context | `company/process/controls/ctrl-enterprise-context.md` |
+| Instance interfaces | `company/process/interfaces/ctrl-instance-interfaces.md` |
+| Spec profiles (domain phase guidance) | `company/process/controls/ctrl-spec-profiles.md` |
+| Spec-Driven Development process | `company/process/mechanisms/spec-driven-development.md` |

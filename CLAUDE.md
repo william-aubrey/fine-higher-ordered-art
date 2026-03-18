@@ -6,10 +6,10 @@ Abstract expressionist acrylic paintings sold through a custom tiered-bid auctio
 
 Fine Higher Ordered Art (FHOA) is the Principal's art business — original acrylic paintings expressing emotional and spiritual themes, sold through a purpose-built auction platform. The artist (William Aubrey) creates the work; this instance handles everything from catalog presentation through auction execution, payment, and fulfillment.
 
-FHOA operates under a layered authority model:
+FHOA operates under boundary-enforcement governance:
 
-- **Layer 1 (read-only):** `governance/` — constraints, interfaces, approval gates, enterprise context. Authored by C3PO. Never edit directly; propose changes via `/exchange write proposal`.
-- **Layer 2 (instance-owned):** `specs/` — product specification, auction design, user journeys. This instance owns and evolves these freely within Layer 1 constraints.
+- **Process definitions** (`company/process/`) — constraints, interfaces, approval gates, enterprise context. Authored by C3PO. Never edit directly; propose changes via `/exchange write proposal`.
+- **Product specifications** (`company/production/auction-platform/specs/`) — product specification, auction design, user journeys. This instance owns and evolves these freely within process constraints.
 
 ## Product Thesis
 
@@ -32,21 +32,30 @@ FHOA is a software / website that hosts a custom site for selling a collection o
 4. **HC-05:** Customer data encrypted; PCI-compliant payment processing; no direct storage of payment credentials
 5. **HC-07:** Art-safe shipping required (rigid packaging, acid-free wrapping, insured)
 
-Full constraints: `governance/controls/ctrl-instance-constraints.md`
+Full constraints: `company/process/controls/ctrl-instance-constraints.md`
 
 ## Project Structure
 
 ```
-governance/              Read-only Layer 1 documents (from C3PO)
-  controls/              Constraints, approval gates, enterprise context, spec profiles
-  mechanisms/            Process guides (SDD methodology)
-specs/                   Product specification (instance-owned, editable)
-  spec-progress.md         Spec lifecycle progress tracker
-  spec-v1-00-index.md      Reading order + key decisions
-exchange/                Governance communication records (immutable)
-reference/idef0/         Enterprise IDEF0 reference library
-library/sprints/         Sprint history
-library/log/             Reasoning logs
+company/                  Company layer
+  fhoa-soul.md            Soul document — product thesis, A-0 ICOM, constraints
+  process/                Process definitions (read-only — from C3PO)
+    controls/             Constraints, approval gates, enterprise context, spec profiles, IDEF0 references
+    interfaces/           Boundary contracts (A-0 ICOM, intercompany interfaces)
+    mechanisms/           Process guides (SDD methodology)
+  production/
+    auction-platform/     Product: Charlotte Collection auction website
+      specs/              Product specification (instance-owned, editable)
+      build/              Build artifacts (code, assets)
+  sales/                  Sales materials
+agents/                   Agent work products
+  clo/library/            CLO deliverables (legal RFPs)
+system/                   Operational records
+  exchange/               Governance communication records (immutable)
+  sprints/                Sprint history
+  log/                    Reasoning logs
+  transcripts/            Session transcripts
+  archive/                Triage queue for retired files
 ```
 
 ## Skills
@@ -69,7 +78,7 @@ library/log/             Reasoning logs
 
 **Onboarded:** 2026-03-15
 **Stage:** A31 Product Management — Phases 1–2 complete, Phase 3 (Product Design) next
-**Spec progress:** `specs/spec-progress.md`
+**Spec progress:** `company/production/auction-platform/specs/spec-progress.md`
 
 ## Next Steps
 
@@ -78,7 +87,3 @@ library/log/             Reasoning logs
 3. Phase 4 SDD: Technical Architecture
 4. Phase 5: Simulate (two-pass validation)
 5. Evaluate tech stack and select payment processor (Phase 4 decisions)
-
-## Active Sprint
-**Log:** `library/log/2026-03-17.md`
-After every response, append a 1-2 line reasoning entry to the log. Get the timestamp from `powershell -Command "Get-Date -Format 'HH:mm'"` (or `date +%H:%M`). Include `[UPDATED filename]` brackets for any files changed. Write your reasoning — what you did, why, what it connects to, what concerned you. No categorization tags. See sprint skill §Log for format.

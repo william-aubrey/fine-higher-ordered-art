@@ -7,7 +7,7 @@ user-invocable: true
 
 # /spec
 
-Universal specification lifecycle for any project. Produces a modular spec suite in `specs/` through 5 phases.
+Universal specification lifecycle for any project. Produces a modular spec suite through 5 phases.
 
 ## Step 0: Modifier Detection
 
@@ -28,14 +28,28 @@ Parse the first argument after `/spec`. Branch accordingly.
 
 ---
 
+## Product Resolution
+
+Before any operation, determine which product the spec suite targets.
+
+1. Scan `company/production/*/` to find product folders.
+2. If exactly one product exists → use it automatically. Set `[product]` to that folder name.
+3. If multiple products exist → ask: "Which product are you speccing?" and list the options.
+4. If no products exist → ask: "What is the product name?" and create `company/production/[product-name]/specs/`.
+5. Store the active product in `spec-progress.md` so subsequent invocations don't re-ask.
+
+All spec paths below use `company/production/[product]/specs/` as the base.
+
+---
+
 ## Conventions
 
 | Item | Path | Purpose |
 |---|---|---|
-| Spec documents | `specs/spec-v1-*.md` | The deliverable — numbered spec files |
-| Spec index | `specs/spec-v1-00-index.md` | Reading order + status |
-| Progress tracker | `specs/spec-progress.md` | Phase completion, gap tracking |
-| Spec profiles | `governance/controls/ctrl-spec-profiles.md` | Domain-specific phase guidance |
+| Spec documents | `company/production/[product]/specs/spec-v1-*.md` | The deliverable — numbered spec files |
+| Spec index | `company/production/[product]/specs/spec-v1-00-index.md` | Reading order + status |
+| Progress tracker | `company/production/[product]/specs/spec-progress.md` | Phase completion, gap tracking |
+| Spec profiles | `company/process/controls/ctrl-spec-profiles.md` | Domain-specific phase guidance |
 
 ---
 
@@ -57,15 +71,17 @@ date +%Y-%m-%d
 
 ## Branch: Start
 
-**Purpose:** Initialize the spec suite for a new project. Run once per project.
+**Purpose:** Initialize the spec suite for a new project. Run once per product.
 
 ### Procedure
 
-1. **Check for existing spec suite.** If `specs/spec-progress.md` exists, report: "Spec suite already initialized. Run `/spec status` to see progress, or `/spec plan` to revise." Stop.
+1. **Resolve the product** (see Product Resolution above).
 
-2. **Read project context.** Read `CLAUDE.md` and any README, SRS seed, or governance documents at the project root. Understand what this project is.
+2. **Check for existing spec suite.** If `company/production/[product]/specs/spec-progress.md` exists, report: "Spec suite already initialized. Run `/spec status` to see progress, or `/spec plan` to revise." Stop.
 
-3. **Determine the project profile.** Read `governance/controls/ctrl-spec-profiles.md`. Based on the project context, select the matching profile (software, construction, governance, events). If uncertain, present the options and ask the Principal:
+3. **Read project context.** Read `CLAUDE.md` and any README, SRS seed, or governance documents at the project root. Understand what this project is.
+
+4. **Determine the project profile.** Read `company/process/controls/ctrl-spec-profiles.md`. Based on the project context, select the matching profile (software, construction, governance, events). If uncertain, present the options and ask the Principal:
 
    > What type of project is this?
    > - **software** — Web, mobile, API, or platform. Deliverable is running code.
@@ -74,11 +90,11 @@ date +%Y-%m-%d
    > - **events** — Live event. Deliverable is a produced experience.
    > - **other** — I'll propose a custom spec plan based on your project.
 
-4. **Gather project thesis.** If not already clear from project context, ask:
+5. **Gather project thesis.** If not already clear from project context, ask:
 
    > In 1–3 sentences, what is this project and what does it produce?
 
-5. **Propose the spec plan.** Using the selected profile, generate a concrete list of spec documents the project will need, mapped to the 5 phases. Include:
+6. **Propose the spec plan.** Using the selected profile, generate a concrete list of spec documents the project will need, mapped to the 5 phases. Include:
    - Phase assignment for each document
    - Proposed filename following the `spec-v1-{nn}-{slug}.md` convention
    - One-line description of each document's purpose
@@ -86,12 +102,13 @@ date +%Y-%m-%d
 
    Present the plan and ask: "Does this plan look right? I can add, remove, or rename documents before we start."
 
-6. **Write the progress tracker.** After Principal approval, create `specs/spec-progress.md`:
+7. **Write the progress tracker.** After Principal approval, create `company/production/[product]/specs/spec-progress.md`:
 
    ```markdown
    # Spec Progress
 
    **Project:** [project name]
+   **Product:** [product folder name]
    **Profile:** [selected profile]
    **Thesis:** [1–3 sentence project thesis]
    **Initialized:** [date from shell]
@@ -117,14 +134,15 @@ date +%Y-%m-%d
    | *(empty until simulate is run)* | | | | | |
    ```
 
-7. **Create the spec index.** Create `specs/spec-v1-00-index.md` with the planned document list, reading order, and empty sections for key decisions and supporting references.
+8. **Create the spec index.** Create `company/production/[product]/specs/spec-v1-00-index.md` with the planned document list, reading order, and empty sections for key decisions and supporting references.
 
-8. **Create `specs/` folder** if it doesn't exist.
+9. **Create folders** if they don't exist: `company/production/[product]/specs/`.
 
-9. **Report:**
+10. **Report:**
 
    ```
    Spec suite initialized.
+     Product: [product]
      Profile: [profile]
      Documents planned: [count]
      Next phase: who
@@ -132,7 +150,7 @@ date +%Y-%m-%d
    Run /spec who to begin.
    ```
 
-10. **Stop.** Do not begin writing specs.
+11. **Stop.** Do not begin writing specs.
 
 ---
 
@@ -142,7 +160,9 @@ date +%Y-%m-%d
 
 ### Procedure
 
-1. **Read the progress tracker** (`specs/spec-progress.md`). Verify this phase's prerequisites are met:
+1. **Resolve the product** (see Product Resolution above).
+
+2. **Read the progress tracker** (`company/production/[product]/specs/spec-progress.md`). Verify this phase's prerequisites are met:
    - `who` — no prerequisites (first phase)
    - `how` — `who` must be complete
    - `what` — `who` and `how` must be complete
@@ -150,7 +170,7 @@ date +%Y-%m-%d
 
    If prerequisites are not met, report which phases are missing and stop.
 
-2. **Check for simulation gaps.** If `spec-progress.md` has gaps tagged to this phase from a prior simulation, list them prominently:
+3. **Check for simulation gaps.** If `spec-progress.md` has gaps tagged to this phase from a prior simulation, list them prominently:
 
    > This phase has [N] gaps from simulation to address:
    > 1. [gap description] — [severity]
@@ -158,17 +178,17 @@ date +%Y-%m-%d
    >
    > Address these gaps while working on this phase.
 
-3. **Read the profile.** Open `governance/controls/ctrl-spec-profiles.md` and read the guidance for this phase under the project's profile. Note:
+4. **Read the profile.** Open `company/process/controls/ctrl-spec-profiles.md` and read the guidance for this phase under the project's profile. Note:
    - What this phase produces
    - Typical document count
    - Key questions to answer
    - Quality gate criteria
 
-4. **Read prior phase outputs.** Read all completed spec documents from earlier phases. These are the inputs to this phase.
+5. **Read prior phase outputs.** Read all completed spec documents from earlier phases. These are the inputs to this phase.
 
-5. **Read existing documents.** If spec documents for this phase already exist (re-entry after simulation), read them to understand current state before modifying.
+6. **Read existing documents.** If spec documents for this phase already exist (re-entry after simulation), read them to understand current state before modifying.
 
-6. **Execute the phase.** Work with the Principal to produce the spec document(s). Follow the profile's key questions as a guide but adapt to the project's specific needs. The profile provides guardrails, not scripts.
+7. **Execute the phase.** Work with the Principal to produce the spec document(s). Follow the profile's key questions as a guide but adapt to the project's specific needs. The profile provides guardrails, not scripts.
 
    During execution:
    - Present options with tradeoffs for decisions
@@ -176,13 +196,13 @@ date +%Y-%m-%d
    - Log open questions with IDs and owners
    - Never proceed past a blocking question without Principal input
 
-7. **Quality gate check.** When the phase feels complete, review against the profile's quality gate criteria. Report pass/fail for each criterion.
+8. **Quality gate check.** When the phase feels complete, review against the profile's quality gate criteria. Report pass/fail for each criterion.
 
-8. **Update the progress tracker.** Mark documents as complete in `specs/spec-progress.md` with the current date.
+9. **Update the progress tracker.** Mark documents as complete in `company/production/[product]/specs/spec-progress.md` with the current date.
 
-9. **Update the spec index.** Add or update entries in `specs/spec-v1-00-index.md`.
+10. **Update the spec index.** Add or update entries in `company/production/[product]/specs/spec-v1-00-index.md`.
 
-10. **Report:**
+11. **Report:**
 
     ```
     Phase [name] complete.
@@ -202,13 +222,15 @@ date +%Y-%m-%d
 
 ### Procedure
 
-1. **Read the progress tracker.** Verify that at least phases 1–4 are complete (or that the Principal explicitly wants to simulate an incomplete suite for early feedback). If incomplete, warn and ask for confirmation.
+1. **Resolve the product** (see Product Resolution above).
 
-2. **Read the profile's simulation method.** Open `governance/controls/ctrl-spec-profiles.md` and read the Phase 5 section for this project's profile. Note the validation method and pass structure.
+2. **Read the progress tracker.** Verify that at least phases 1–4 are complete (or that the Principal explicitly wants to simulate an incomplete suite for early feedback). If incomplete, warn and ask for confirmation.
 
-3. **Read the full spec suite.** Read every spec document in order. Build a complete mental model of the project.
+3. **Read the profile's simulation method.** Open `company/process/controls/ctrl-spec-profiles.md` and read the Phase 5 section for this project's profile. Note the validation method and pass structure.
 
-4. **Execute simulation passes.** Follow the profile's validation method. For each pass:
+4. **Read the full spec suite.** Read every spec document in order. Build a complete mental model of the project.
+
+5. **Execute simulation passes.** Follow the profile's validation method. For each pass:
 
    **Software — Pass 1 (Sprint-level):**
    Walk through the spec as if planning development sprints. For each logical sprint, ask: "Does the agent know enough to start this sprint?" Record every question the spec doesn't answer.
@@ -228,15 +250,15 @@ date +%Y-%m-%d
    **Events — Pass 1 (Day-of) + Pass 2 (Contingency):**
    Walk through hour by hour, then walk through failure scenarios.
 
-5. **Classify gaps.** For each gap found:
+6. **Classify gaps.** For each gap found:
    - **Description:** What specific information is missing?
    - **Severity:** Dangerous (wrong guess likely) or Safe (default assumption OK)
    - **Phase:** Which phase does this gap belong to? (who, how, what, or build)
    - **Document:** Which existing spec document should be updated, or is a new document needed?
 
-6. **Update the progress tracker.** Write gaps to the Gap Tracker table in `specs/spec-progress.md`. Log the simulation pass in the Simulation Log.
+7. **Update the progress tracker.** Write gaps to the Gap Tracker table in `company/production/[product]/specs/spec-progress.md`. Log the simulation pass in the Simulation Log.
 
-7. **Report:**
+8. **Report:**
 
    ```
    Simulation complete — Pass [N]
@@ -259,7 +281,7 @@ date +%Y-%m-%d
    Ready for implementation.
    ```
 
-8. **If zero dangerous gaps,** mark the simulate phase as complete in `specs/spec-progress.md`.
+9. **If zero dangerous gaps,** mark the simulate phase as complete in `company/production/[product]/specs/spec-progress.md`.
 
 ---
 
@@ -269,7 +291,7 @@ date +%Y-%m-%d
 
 ### Procedure
 
-1. Read `specs/spec-progress.md`.
+1. Resolve the product, then read `company/production/[product]/specs/spec-progress.md`.
 2. Find the first phase that is not complete, in order: who → how → what → build → simulate.
 3. If all phases are complete, report: "Spec suite complete. All phases validated."
 4. If a phase is found, execute it (branch to the corresponding phase procedure).
@@ -282,10 +304,10 @@ date +%Y-%m-%d
 
 ### Procedure
 
-1. Read `specs/spec-progress.md`.
+1. Resolve the product, then read `company/production/[product]/specs/spec-progress.md`.
 2. Display the full plan table with current status.
 3. Ask: "Would you like to add, remove, rename, or reorder any documents?"
-4. If changes are requested, update `specs/spec-progress.md` and `specs/spec-v1-00-index.md`.
+4. If changes are requested, update `spec-progress.md` and `spec-v1-00-index.md`.
 
 ---
 
@@ -295,7 +317,7 @@ date +%Y-%m-%d
 
 ### Procedure
 
-1. **Check for spec suite.** If `specs/spec-progress.md` does not exist:
+1. **Check for spec suite.** Resolve the product. If no `spec-progress.md` exists:
 
    ```
    No spec suite initialized.
@@ -313,11 +335,12 @@ date +%Y-%m-%d
    Run /spec start to begin.
    ```
 
-2. **If spec suite exists,** read `specs/spec-progress.md` and display:
+2. **If spec suite exists,** read `spec-progress.md` and display:
 
    ```
    # Spec Status — [Project Name]
 
+   **Product:** [product]
    **Profile:** [profile]
    **Initialized:** [date]
 
@@ -361,7 +384,7 @@ spec-v{version}-{number}{suffix}-{slug}.md
 | `{suffix}` | Sub-ordering (lowercase letter) | `a`, `b`, `c` |
 | `{slug}` | Human-readable description | `icp-jtbd`, `journey-collector` |
 
-**Rule: `ls` must produce the reading order.** If someone types `ls specs/` the files appear in the order they should be read.
+**Rule: `ls` must produce the reading order.** If someone types `ls company/production/[product]/specs/` the files appear in the order they should be read.
 
 ---
 
@@ -373,7 +396,7 @@ spec-v{version}-{number}{suffix}-{slug}.md
 - **Simulation is not optional.** Every spec suite must be simulated before it's considered ready for execution. Skipping simulation is how subtle-but-wrong specs reach implementation.
 - **Gaps route to phases, not to new "gap phases."** Simulation findings are addressed by updating existing specs or creating new specs within the appropriate phase. There is no separate "gaps" phase.
 - **The Principal directs.** The agent proposes, the Principal decides. Never proceed past a decision point without Principal input. Present options with tradeoffs, not single recommendations.
-- **Spec folder hygiene.** `specs/` contains only current, authoritative spec documents. Working drafts, analysis docs, and retired specs go in `library/`. Process artifacts go in `library/`. Reference materials go in `reference/`.
+- **Spec folder hygiene.** `company/production/[product]/specs/` contains only current, authoritative spec documents. Working drafts and analysis docs go in `agents/[agent]/library/`. Reference materials go in `company/process/mechanisms/`.
 
 ---
 
@@ -381,7 +404,7 @@ spec-v{version}-{number}{suffix}-{slug}.md
 
 If a project already has spec documents but no `spec-progress.md` (predates the skill):
 
-1. Run `/spec start`. The skill will detect existing `specs/` files.
+1. Run `/spec start`. The skill will detect existing spec files.
 2. During initialization, map existing documents to phases.
 3. Mark completed phases based on what exists.
 4. The Principal confirms the mapping.
@@ -392,4 +415,4 @@ If a project already has spec documents but no `spec-progress.md` (predates the 
 ## Relationship to Other Skills
 
 - **`/sprint`** manages the session (this chat). `/spec` manages the specification lifecycle (multi-session). They are complementary — a typical sprint opens, does spec work via `/spec [phase]`, then closes. The sprint narrative captures what happened; the spec progress tracker captures where the spec suite stands.
-- **`/exchange`** delivers governance documents between C3PO and instances. The spec profiles control document and SDD process guide are delivered via exchange. Spec documents themselves are instance-owned (Layer 2) and don't flow through exchange unless they affect governance.
+- **`/exchange`** delivers governance documents between C3PO and instances. The spec profiles control document and SDD process guide are delivered via exchange. Spec documents themselves are instance-owned and don't flow through exchange unless they affect boundary contracts.

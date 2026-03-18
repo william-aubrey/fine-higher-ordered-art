@@ -30,12 +30,12 @@ These paths are fixed by convention. Every project that uses `/sprint` follows t
 
 | Item | Path | Purpose |
 |---|---|---|
-| Sprint narratives | `library/sprints/*.md` | Timestamped session records |
-| Sprint log | `library/sprints/sprint-log.md` | Running index of all sprints |
+| Sprint narratives | `system/sprints/*.md` | Timestamped session records |
+| Sprint log | `system/sprints/sprint-log.md` | Running index of all sprints |
 | Task backlog | `TASKS.md` (project root) | What needs to be done |
-| Reasoning log | `library/log/YYYY-MM-DD.md` | Turn-by-turn reasoning journal (see §Log) |
+| Reasoning log | `system/log/YYYY-MM-DD.md` | Turn-by-turn reasoning journal (see §Log) |
 
-If `library/sprints/` or `library/log/` do not exist, create them before writing.
+If `system/sprints/` or `system/log/` do not exist, create them before writing.
 
 ---
 
@@ -52,7 +52,7 @@ The reasoning log is a persistent, turn-by-turn journal of the AI's internal ana
 
 ### Format
 
-One file per day: `library/log/YYYY-MM-DD.md`. Append-only. Each entry:
+One file per day: `system/log/YYYY-MM-DD.md`. Append-only. Each entry:
 
 ```
 HH:MM — [UPDATED filename.md, filename2.md] Free-form reasoning about what
@@ -99,9 +99,9 @@ The result is used in narrative filenames: `YYYY-MM-DD-HHMM-[topic-slug].md`
 
 1. **Get timestamp** (for the brief header).
 
-2. **Read the sprint log** (`library/sprints/sprint-log.md`). If it doesn't exist, note "No sprint history."
+2. **Read the sprint log** (`system/sprints/sprint-log.md`). If it doesn't exist, note "No sprint history."
 
-3. **Find the latest narrative.** List all `.md` files in `library/sprints/` (excluding `sprint-log.md`), sorted lexicographically. The last file is the most recent narrative. If none exist, note "No prior sprints."
+3. **Find the latest narrative.** List all `.md` files in `system/sprints/` (excluding `sprint-log.md`), sorted lexicographically. The last file is the most recent narrative. If none exist, note "No prior sprints."
 
 4. **Read the latest narrative** (if it exists). Extract:
    - Session summary (what was done)
@@ -154,13 +154,13 @@ The result is used in narrative filenames: `YYYY-MM-DD-HHMM-[topic-slug].md`
 Awaiting your instruction.
 ```
 
-10. **Start the reasoning log.** Get today's date from the shell. Create `library/log/YYYY-MM-DD.md` if it doesn't exist. Write the first entry: the sprint open timestamp and topic.
+10. **Start the reasoning log.** Get today's date from the shell. Create `system/log/YYYY-MM-DD.md` if it doesn't exist. Write the first entry: the sprint open timestamp and topic.
 
 11. **Activate the log in CLAUDE.md.** Append the following section to the end of `CLAUDE.md`:
 
 ```markdown
 ## Active Sprint
-**Log:** `library/log/YYYY-MM-DD.md`
+**Log:** `system/log/YYYY-MM-DD.md`
 After every response, append a 1-2 line reasoning entry to the log. Get the timestamp from `powershell -Command "Get-Date -Format 'HH:mm'"` (or `date +%H:%M`). Include `[UPDATED filename]` brackets for any files changed. Write your reasoning — what you did, why, what it connects to, what concerned you. No categorization tags. See sprint skill §Log for format.
 ```
 
@@ -180,7 +180,7 @@ After every response, append a 1-2 line reasoning entry to the log. Get the time
 
 3. **Collect file changes.** Run `git status` and `git diff --stat` to identify every file created, modified, or deleted during this session. If the project is not a git repo, ask the user what changed.
 
-4. **Read the reasoning log.** Find today's log file in `library/log/`. If multiple days, read all log files created since the last sprint close. The log is the **primary source** for the narrative — it contains timestamped reasoning, file changes, and analytical process from every turn. Extract:
+4. **Read the reasoning log.** Find today's log file in `system/log/`. If multiple days, read all log files created since the last sprint close. The log is the **primary source** for the narrative — it contains timestamped reasoning, file changes, and analytical process from every turn. Extract:
    - The state of the world before this session and why work was needed
    - Insights or realizations that changed understanding (not just tasks completed)
    - What was built, fixed, or decided — and the rationale for *how* it was done
@@ -190,7 +190,7 @@ After every response, append a 1-2 line reasoning entry to the log. Get the time
 
    If no reasoning log exists (pre-log sprint), fall back to scanning the conversation.
 
-5. **Write the narrative** to `library/sprints/[TIMESTAMP]-[topic-slug].md`:
+5. **Write the narrative** to `system/sprints/[TIMESTAMP]-[topic-slug].md`:
 
 ```markdown
 # [Session Name]
@@ -254,7 +254,7 @@ Read these files in order to restore context for the next session:
 **Next task:** [One sentence — what the next session should do first]
 ```
 
-6. **Update the sprint log** (`library/sprints/sprint-log.md`). Add a row to the sprint table. If the file doesn't exist, create it:
+6. **Update the sprint log** (`system/sprints/sprint-log.md`). Add a row to the sprint table. If the file doesn't exist, create it:
 
 ```markdown
 # Sprint Log
@@ -285,7 +285,7 @@ Read these files in order to restore context for the next session:
 
    If any memory candidates exist, write them to the memory system following the memory protocol (frontmatter + MEMORY.md index). If nothing is memory-worthy, move on — don't force it.
 
-9. **Deactivate the log.** Remove the `## Active Sprint` section from `CLAUDE.md`. The log file in `library/log/` remains permanently — it is a historical record, not scaffolding.
+9. **Deactivate the log.** Remove the `## Active Sprint` section from `CLAUDE.md`. The log file in `system/log/` remains permanently — it is a historical record, not scaffolding.
 
 10. **Report.** Show the user:
    - Narrative filename and location
@@ -316,8 +316,8 @@ Read these files in order to restore context for the next session:
 
 ## First Sprint in a New Project
 
-If this is the first sprint (no `library/sprints/` folder, no `sprint-log.md`, no TASKS.md):
+If this is the first sprint (no `system/sprints/` folder, no `sprint-log.md`, no TASKS.md):
 
-**On open:** Create `library/sprints/`. Report "First sprint — no history to restore." Read CLAUDE.md and any README for orientation. Present whatever context is available.
+**On open:** Create `system/sprints/`. Report "First sprint — no history to restore." Read CLAUDE.md and any README for orientation. Present whatever context is available.
 
 **On close:** Create everything: the narrative, `sprint-log.md` (with one row), and `TASKS.md` (if tasks were identified). The first narrative establishes the project's sprint history.
