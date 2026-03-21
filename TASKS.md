@@ -34,6 +34,12 @@
 - [ ] Record video content — artist and others discussing paintings
 - [ ] Research art-safe shipping boxes — FedEx and UPS options and pricing by painting size
 
+### Agent Infrastructure
+- [ ] Instantiate CTO agent (`agents/cto/cto-tasks.md`) — first agent, owns Phase 3-5 specs + tech evaluation
+- [ ] Migrate CTO-scoped tasks from TASKS.md to `agents/cto/cto-tasks.md`
+- [ ] Instantiate CAO agent (`agents/cao/cao-tasks.md`) — intake routing, governance coordination
+- [ ] Trim TASKS.md to Principal-only items after agent task migration
+
 ### A2 Production Decomposition
 - [ ] Decompose A2 Production into instance-specific sub-functions based on refined spec
 
@@ -53,3 +59,6 @@
 - [x] Acknowledge spec-skill-icom-amendment exchange — 2026-03-16
 - [x] Initialize /spec lifecycle — progress tracker, phase mapping, Phases 1–2 validated — 2026-03-16
 - [x] Archive auction-mechanism.md and SRS seed to library/ — 2026-03-16
+- [x] Produce autonomy strategy analysis (Principal's 2026-03-20 cross-instance exercise) — 2026-03-20
+- [x] Install `ctrl-agent-directed-work.md` governance control — 2026-03-20
+- [x] Acknowledge agent-directed-work amendment with strategy + agent inventory — 2026-03-20
