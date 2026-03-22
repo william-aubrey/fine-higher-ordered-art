@@ -2,24 +2,9 @@
 
 ## Backlog
 
-### Product Definition (A31)
-- [ ] Phase 3 SDD: Site Design (`company/production/auction-platform/specs/spec-v1-03a-site-design.md`) — every page template, component, UX element, responsive behavior
-- [ ] Phase 3 SDD: Data and State (`company/production/auction-platform/specs/spec-v1-03b-data-and-state.md`) — schemas, auction state machine, notification events
-- [ ] Phase 4 SDD: Technical Architecture (`company/production/auction-platform/specs/spec-v1-04-technical-architecture.md`) — services, APIs, data model, deployment
-- [ ] Phase 5: Simulate — two-pass validation (sprint-level + function-level)
-- [ ] Build feature roadmap from ICP/JTBD output
-- [ ] Resolve pre-launch open questions (see `company/production/auction-platform/specs/spec-v1-00-index.md` consolidated list)
-
-### Technical
-- [ ] Evaluate tech stack — static site + serverless auction logic vs. full web app
-- [ ] Select payment processor (Stripe, Square, etc.) — must be PCI-compliant per HC-05; Stripe viable for physical art
-- [ ] Select hosting / deployment platform
-- [ ] Design real-time bid status system (first-come-first-served, payment-in-progress states)
-- [ ] Implement Open Graph / social meta tags for link previews (Spectator/Journalist discovery)
-
 ### Legal / Fiduciary (William — external action required)
-- [ ] Find securities counsel — deliver `agents/clo/library/securities-opinion-request.md` as RFP (**hard prerequisite**)
-- [ ] Find fiduciary lawyer — deliver `agents/clo/library/fiduciary-rfp.md` as RFP (**hard prerequisite**)
+- [ ] Find securities counsel — deliver `agents/clo/products/securities-opinion-request.md` as RFP (**hard prerequisite**)
+- [ ] Find fiduciary lawyer — deliver `agents/clo/products/fiduciary-rfp.md` as RFP (**hard prerequisite**)
 - [ ] Determine credit card / wire transfer threshold (fiduciary to advise)
 - [ ] Determine accepted payment methods by amount (fiduciary to advise)
 - [ ] Draft terms of service (fiduciary to draft, securities counsel to review)
@@ -35,13 +20,11 @@
 - [ ] Research art-safe shipping boxes — FedEx and UPS options and pricing by painting size
 
 ### Agent Infrastructure
-- [ ] Instantiate CTO agent (`agents/cto/cto-tasks.md`) — first agent, owns Phase 3-5 specs + tech evaluation
-- [ ] Migrate CTO-scoped tasks from TASKS.md to `agents/cto/cto-tasks.md`
 - [ ] Instantiate CAO agent (`agents/cao/cao-tasks.md`) — intake routing, governance coordination
-- [ ] Trim TASKS.md to Principal-only items after agent task migration
+- [ ] Build feature roadmap from ICP/JTBD output (CPO — instantiate when needed)
 
 ### A2 Production Decomposition
-- [ ] Decompose A2 Production into instance-specific sub-functions based on refined spec
+- [ ] Decompose A2 Production into instance-specific sub-functions based on refined spec (CAO)
 
 ## Completed
 - [x] Review SRS seed — validated during auction mechanism design — 2026-03-15
@@ -62,3 +45,5 @@
 - [x] Produce autonomy strategy analysis (Principal's 2026-03-20 cross-instance exercise) — 2026-03-20
 - [x] Install `ctrl-agent-directed-work.md` governance control — 2026-03-20
 - [x] Acknowledge agent-directed-work amendment with strategy + agent inventory — 2026-03-20
+- [x] Instantiate CTO agent (`agents/cto/cto-tasks.md`) — 2026-03-21
+- [x] Migrate CTO-scoped tasks from TASKS.md to `agents/cto/cto-tasks.md` — 2026-03-21

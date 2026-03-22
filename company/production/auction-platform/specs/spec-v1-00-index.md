@@ -19,7 +19,7 @@ The numbered spec documents follow the Spec-Driven Development methodology (see 
 | 02d | `spec-v1-02d-journey-magnate.md` | HOW: Magnate (WTA) | Complete |
 | 02e | `spec-v1-02e-journey-gambler.md` | HOW: Gambler (anti-journey) | Complete |
 | 02f | `spec-v1-02f-journey-spectator-journalist.md` | HOW: Spectator & Journalist | Complete |
-| 03a | `spec-v1-03a-site-design.md` | WHAT: Site design — every page and component | Not started |
+| 03a | `spec-v1-03a-site-design.md` | WHAT: Site design — every page and component | Complete |
 | 03b | `spec-v1-03b-data-and-state.md` | WHAT: Data schemas and auction state | Not started |
 | 04 | `spec-v1-04-technical-architecture.md` | BUILD: Infrastructure, APIs, deployment | Not started |
 
@@ -36,8 +36,8 @@ These documents were foundational to the spec suite. Their content is absorbed i
 
 | Document | What it is |
 |---|---|
-| `agents/clo/library/securities-opinion-request.md` | RFP for securities counsel — Howey test review of reward mechanic |
-| `agents/clo/library/fiduciary-rfp.md` | RFP for fiduciary lawyer — escrow, payments, contracts, terms of service |
+| `agents/clo/products/securities-opinion-request.md` | RFP for securities counsel — Howey test review of reward mechanic |
+| `agents/clo/products/fiduciary-rfp.md` | RFP for fiduciary lawyer — escrow, payments, contracts, terms of service |
 
 ---
 

@@ -132,9 +132,10 @@ Based on the exchange type, purpose, and conversation context, determine what fi
 Use the conversation context to determine the specific files. If uncertain, propose a file list and confirm with the user before proceeding.
 
 **Source files in C3PO context:** When the payload includes enterprise documents (enterprise context, constraint library, skill files, etc.), copy from the canonical source in the C3PO repo. Source locations:
-- Governance documents: `enterprise/process/controls/`, `enterprise/process/interfaces/`, `enterprise/process/mechanisms/`
-- Skill files: `enterprise/registry/`
-- Model files: `enterprise/model/`
+- Governance documents: `enterprise/process/controls/`, `enterprise/process/interfaces/`
+- Skill files: `enterprise/production/eaas/build/registry/`
+- Model files: `enterprise/production/eaas/build/model/`
+- Data ontology: `enterprise/production/eaas/build/data/`
 
 Always use the latest version.
 
@@ -212,13 +213,32 @@ alternatives. Written for a reader who was not present for the decision.]
 
 ## Step 8: Fulfill the Manifest
 
-Create every file listed in the MANIFEST Contents section inside the exchange folder.
+Create every file listed in the MANIFEST Payload Contents section inside the exchange folder.
 
-- **For documents that exist in the repo** (e.g., `ctrl-enterprise-context.md`, skill files): Read the canonical source and write a copy into the exchange folder. Use the filename specified in the Contents list.
+- **For documents that exist in the repo** (e.g., `ctrl-enterprise-context.md`): Read the canonical source and write a copy into the exchange folder. Use the filename specified in the Contents list.
 - **For documents that must be authored** (e.g., amended constraints, proposals, status reports): Write them fresh based on the conversation context and the exchange purpose.
 - **For reference copies with `ref-` prefix:** Copy the source document but rename with the `ref-` prefix as listed in Contents.
 
-After writing all files, verify the folder contents match the Contents list exactly. Report any discrepancies.
+After writing all payload files, verify the folder contents match the Payload Contents list exactly. Report any discrepancies.
+
+### Direct Placement Files
+
+For files listed in the MANIFEST's "Direct Placement (hash-verified)" section:
+
+1. **Hash the source file** before copying:
+   ```bash
+   sha256sum "[source-path]/[filename]"
+   ```
+2. **Copy the file directly** to the target location in the receiving repo (not into the exchange folder).
+3. **Record the hash** in the MANIFEST table.
+
+Direct placement is used for read-only reference files with a canonical source (e.g., enterprise skill files, FIPS standards, CAO methodologies). These files are identical across all instances — duplicating them in exchange folders is wasteful. The SHA-256 hash in the MANIFEST is the audit trail.
+
+The receiving instance can verify any directly-placed file at any time:
+```bash
+sha256sum "[target-path]/[filename]"
+# Compare output to MANIFEST hash — must match exactly
+```
 
 ---
 
@@ -230,7 +250,8 @@ Run through this checklist (derived from `ctrl-instance-governance-standard.md` 
 - [ ] Direction is clearly stated
 - [ ] Exchange type is valid
 - [ ] Folder name follows `YYYY-MM-DD-HHMM-[slug]` convention with timestamp
-- [ ] Every file listed in Contents exists in the folder
+- [ ] Every file listed in Payload Contents exists in the folder
+- [ ] Every file listed in Direct Placement exists at its target path with matching SHA-256 hash
 - [ ] Boundary documents define constraints and interfaces, not product specification
 - [ ] Constraints reference specific codes from the constraint library
 - [ ] Acknowledgment request is included in Required Actions (if governance docs updated)
@@ -308,6 +329,17 @@ If no exchange folders exist, report: "No exchange folders found in [path]."
 ## Step 12: Read and Summarize
 
 Read the MANIFEST.md in full. Read all payload files in the folder.
+
+If the MANIFEST contains a "Direct Placement (hash-verified)" section, verify each file:
+
+```bash
+sha256sum "[installed-path]/[filename]"
+```
+
+Compare the output to the hash in the MANIFEST. Report:
+- ✓ Hash matches — file verified
+- ✗ Hash mismatch — file may have been modified after delivery
+- ✗ File not found — direct placement may not have been executed
 
 Present a summary:
 

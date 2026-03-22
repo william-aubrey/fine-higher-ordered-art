@@ -17,7 +17,7 @@
 | how | 02d | `spec-v1-02d-journey-magnate.md` | complete | 2026-03-15 |
 | how | 02e | `spec-v1-02e-journey-gambler.md` | complete | 2026-03-15 |
 | how | 02f | `spec-v1-02f-journey-spectator-journalist.md` | complete | 2026-03-15 |
-| what | 03a | `spec-v1-03a-site-design.md` | pending | — |
+| what | 03a | `spec-v1-03a-site-design.md` | complete | 2026-03-21 |
 | what | 03b | `spec-v1-03b-data-and-state.md` | pending | — |
 | build | 04 | `spec-v1-04-technical-architecture.md` | pending | — |
 | simulate | — | — | pending | — |

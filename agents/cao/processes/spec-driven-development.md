@@ -4,7 +4,7 @@
 **IDEF0 Role:** Mechanism (executes the spec-building function)
 **Authority:** C3PO enterprise standard. Applies to all subsidiary instances.
 **Owner:** Principal
-**Location:** `company/process/mechanisms/spec-driven-development.md`
+**Location:** `agents/cao/processes/spec-driven-development.md`
 **Companion:** `company/process/controls/ctrl-spec-profiles.md` (domain-specific phase guidance)
 **Skill:** `.claude/skills/spec/SKILL.md` (executable agent procedure)
 
