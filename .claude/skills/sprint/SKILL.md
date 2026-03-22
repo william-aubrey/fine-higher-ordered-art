@@ -35,8 +35,11 @@ These paths are fixed by convention. Every project that uses `/sprint` follows t
 | Task backlog | `TASKS.md` (project root) | What needs to be done |
 | Reasoning log | `system/log/YYYY-MM-DD.md` | Turn-by-turn reasoning journal (see §Log) |
 | Transcripts | `system/transcripts/*.md` | Curated conversation records (see §Transcript) |
+| Memory snapshot | `system/memory/*.md` | Git-tracked mirror of AI institutional memory (see §Memory Snapshot) |
+| Raw transcripts | `system/transcripts/raw/*.jsonl` | Auto-captured session JSONLs (see §Raw Session Capture) |
+| Config mirror | `system/config/claude/` | Git-tracked mirror of Claude Code settings and hooks (see §Config Snapshot) |
 
-If `system/sprints/`, `system/log/`, or `system/transcripts/` do not exist, create them before writing.
+If `system/sprints/`, `system/log/`, `system/transcripts/`, `system/memory/`, `system/transcripts/raw/`, or `system/config/claude/` do not exist, create them before writing.
 
 ---
 
@@ -140,6 +143,86 @@ One file per sprint: starts as `system/transcripts/YYYY-MM-DD-hhmm-open-sprint.m
 3. **Append-only.** Never edit previous turns. Corrections appear in the turn where they happened.
 4. **Permanent.** The transcript is NOT deleted after sprint close. It is a historical record.
 5. **One append call per turn.** Write the full turn entry in a single append. Don't let transcription disrupt primary work.
+
+---
+
+## Memory Snapshot
+
+Claude's auto-memory lives in a local directory outside the git repo (e.g., `C:\Users\[user]\.claude\projects\[project-slug]\memory\`). This is the only piece of AI institutional knowledge that is not version-controlled, not portable across machines, and not visible to C3PO or other instances.
+
+### Purpose
+
+- **At sprint close:** Creates a git-tracked snapshot of the AI's memory state, so memory evolution is visible in version history
+- **Across machines:** If the local `.claude/` directory is lost, the repo snapshot can be used to rebuild it
+- **For C3PO:** Enables visibility into instance AI memory when reviewing exchange packages or sprint narratives
+- **For the user:** The memory is no longer invisible — `git diff system/memory/` shows exactly what the AI learned
+
+### Format
+
+`system/memory/` mirrors the local memory directory exactly. Same filenames, same content. The snapshot is a full replacement — every file is overwritten, not merged.
+
+### Rules
+
+1. **Snapshot at sprint close only.** Not continuous sync. The sprint close procedure copies all `.md` files from the local memory directory to `system/memory/`.
+2. **Full replacement.** Every copy overwrites the previous snapshot. Deleted memories are removed from the snapshot too (delete files in `system/memory/` that no longer exist in the local directory).
+3. **Git tracks the history.** The snapshot itself is just the latest state. `git log system/memory/` shows how memory evolved over time.
+4. **The local copy is authoritative.** Claude loads memory from the local `.claude/` path, not from `system/memory/`. The repo copy is a mirror, not a source.
+5. **Portable rebuild.** If the local memory directory is empty or missing, the repo snapshot can be copied back: `cp system/memory/*.md [local-memory-path]/`
+
+---
+
+## Raw Session Capture
+
+A global `SessionEnd` hook automatically copies the raw session JSONL to `system/transcripts/raw/` when any Claude Code session ends. The hook is installed once at `~/.claude/hooks/export-transcript.sh` and configured in `~/.claude/settings.json`. It fires for every project that has a `system/transcripts/` directory — no per-project setup needed.
+
+### Key Behaviors
+
+- **Project-aware:** Only fires if `system/transcripts/` exists in the project root. Silently skips non-sprint projects.
+- **Dedup with overwrite-if-larger:** If a session ID already exists in `raw/`, compares file sizes. Overwrites if source is larger (session grew after resume). Skips if same or smaller.
+- **No dependencies:** Pure bash, no `jq`. Works on Windows (Git Bash), macOS, and Linux.
+- **Naming:** `YYYY-MM-DD-HHMM-session-[short-id].jsonl` where `short-id` is the first 8 characters of the session UUID.
+
+### Rules
+
+1. **The hook is global.** Installed once per machine at `~/.claude/hooks/export-transcript.sh`. All projects with `system/transcripts/` benefit automatically.
+2. **`system/transcripts/raw/` must exist.** The hook creates it if missing, but the sprint skill should ensure it exists at sprint open.
+3. **Raw files are append-only history.** Never delete raw JSONLs. They are the full-fidelity session record.
+4. **Scale:** ~1.5MB per full sprint session. At ~3-4 sessions/day, ~150MB/month. The `raw/` subfolder makes cold storage migration a one-folder operation.
+
+---
+
+## Config Snapshot
+
+Claude Code's settings (`~/.claude/settings.json`) and hooks (`~/.claude/hooks/`) live outside the git repo. A new machine, corrupted profile, or OS reinstall would lose all AI customizations. The config snapshot mirrors these to `system/config/claude/` at sprint close.
+
+### Purpose
+
+- **At sprint close:** Creates a git-tracked snapshot of Claude Code configuration
+- **Across machines:** If `~/.claude/` is lost, the repo snapshot provides a rebuild path
+- **For C3PO:** Enables visibility into instance AI configuration via `system/config/`
+
+### Format
+
+```
+system/config/claude/
+  settings.json                ← full ~/.claude/settings.json
+  hooks/
+    export-transcript.sh       ← all hook scripts
+```
+
+### Rules
+
+1. **Snapshot at sprint close only.** Not continuous sync. Paired with the memory snapshot.
+2. **Full replacement.** Every copy overwrites the previous snapshot.
+3. **Git tracks the history.** `git log system/config/` shows configuration evolution.
+4. **The local copy is authoritative.** Claude loads config from `~/.claude/`, not from `system/config/`. The repo copy is a mirror.
+5. **Portable rebuild.** If `~/.claude/` is empty or missing:
+   ```bash
+   cp system/config/claude/settings.json ~/.claude/settings.json
+   mkdir -p ~/.claude/hooks
+   cp system/config/claude/hooks/*.sh ~/.claude/hooks/
+   chmod +x ~/.claude/hooks/*.sh
+   ```
 
 ---
 
@@ -396,27 +479,54 @@ Read these files in order to restore context for the next session:
 
    If any memory candidates exist, write them to the memory system following the memory protocol (frontmatter + MEMORY.md index). If nothing is memory-worthy, move on — don't force it.
 
-9. **Final transcript entry.** Append the sprint close turn to the transcript file — this is the last entry. Include the narrative content in the Claude response section (compressed to key sections: Summary, Discoveries, Key Decisions).
+9. **Memory snapshot.** Copy all memory files from the local Claude memory directory to `system/memory/` in the repo. This creates a git-tracked mirror of the AI's institutional knowledge.
 
-10. **Rename the transcript file.** The file was created as `system/transcripts/YYYY-MM-DD-hhmm-open-sprint.md`. Rename it to match the narrative:
+   **Locate the source directory:** The memory path is machine-specific. Find it by checking the system prompt for the `auto memory` section, which contains the path (e.g., `C:\Users\aubrew\.claude\projects\g--My-Drive-A0-C3PO\memory\`). Alternatively, check for `.claude/projects/*/memory/` relative to the user's home directory.
+
+   ```bash
+   # Copy all memory files (overwrite existing — the snapshot is a full replacement)
+   cp [local-memory-path]/*.md system/memory/
+   ```
+
+   Verify the count matches. Report: "Memory snapshot: [N] files → `system/memory/`"
+
+   If `system/memory/` does not exist, create it. If the local memory directory cannot be found or is empty, skip this step and note it in the report.
+
+10. **Config snapshot.** Copy Claude Code's settings and hooks to `system/config/claude/` in the repo. This creates a git-tracked mirror of AI configuration, paired with the memory snapshot.
+
+   ```bash
+   mkdir -p system/config/claude/hooks
+   cp ~/.claude/settings.json system/config/claude/settings.json
+   cp ~/.claude/hooks/*.sh system/config/claude/hooks/ 2>/dev/null
+   ```
+
+   Verify the copy. Report: "Config snapshot: settings.json + [N] hook scripts → `system/config/claude/`"
+
+   If `~/.claude/hooks/` does not exist or is empty, copy only `settings.json`. If `~/.claude/settings.json` cannot be found, skip this step and note it in the report.
+
+11. **Final transcript entry.** Append the sprint close turn to the transcript file — this is the last entry. Include the narrative content in the Claude response section (compressed to key sections: Summary, Discoveries, Key Decisions).
+
+12. **Rename the transcript file.** The file was created as `system/transcripts/YYYY-MM-DD-hhmm-open-sprint.md`. Rename it to match the narrative:
    - Narrative: `system/sprints/YYYY-MM-DD-HHmm-slug.md`
    - Transcript: `system/transcripts/YYYY-MM-DD-HHmm-slug.md`
 
    Use `mv` to rename. The timestamp uses the close time (same as the narrative), not the open time.
 
-11. **Deactivate (concurrent-safe).** Read the `## Active Sprint` section from CLAUDE.md. Extract the `**Sprint:**` value.
+13. **Deactivate (concurrent-safe).** Read the `## Active Sprint` section from CLAUDE.md. Extract the `**Sprint:**` value.
    - **Matches this sprint's ID:** Remove the entire `## Active Sprint` section.
    - **Different ID:** Leave the block untouched — another sprint owns it.
    - **Block absent:** No action needed.
 
    The log and transcript files remain permanently — they are historical records, not scaffolding.
 
-12. **Report.** Show the user:
+14. **Report.** Show the user:
    - Narrative filename and location
    - Transcript filename and location
    - Sprint log updated (with Sprint ID)
    - TASKS.md changes (if any)
    - Memory updates (if any)
+   - Memory snapshot (file count to `system/memory/`)
+   - Config snapshot (files to `system/config/claude/`)
    - Any uncommitted git changes
 
 ---
@@ -462,6 +572,6 @@ Multiple sprints may run in the same repo (e.g., two VS Code windows). The Sprin
 
 If this is the first sprint (no `system/sprints/` folder, no `sprint-log.md`, no TASKS.md):
 
-**On open:** Create `system/sprints/`, `system/log/`, and `system/transcripts/`. The first Sprint ID is `SPR-001`. Report "First sprint — no history to restore." Read CLAUDE.md and any README for orientation. Present whatever context is available.
+**On open:** Create `system/sprints/`, `system/log/`, `system/transcripts/`, `system/transcripts/raw/`, `system/memory/`, and `system/config/claude/`. The first Sprint ID is `SPR-001`. Report "First sprint — no history to restore." Read CLAUDE.md and any README for orientation. Present whatever context is available.
 
 **On close:** Create everything: the narrative, the transcript, `sprint-log.md` (with the `#` column and one row), and `TASKS.md` (if tasks were identified). The first narrative establishes the project's sprint history.
