@@ -10,3 +10,4 @@
 - [Image dissemination](project_image-dissemination.md) — paintings are iconic abstractions that work at any size; wide dissemination encouraged, press use welcomed
 - [Site structure and UX decisions](project_site-structure.md) — page hierarchy, navigation flow, tier button UX, bidding threshold split, domain fhoa.org
 - [Autonomy and agent governance](project_autonomy-and-agent-governance.md) — 20:1 work-to-judgment ratio, agent-directed work standard, CTO first to instantiate, TASKS.md migration needed
+- [FHOA in the enterprise](project_fhoa-in-enterprise.md) — FHOA's role as a community-tier instance, theoretical foundations from C3PO 3rd edition whitepaper, sibling instance contributions, meaning over optimization
