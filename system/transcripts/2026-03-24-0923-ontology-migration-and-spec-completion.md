@@ -131,3 +131,19 @@ Then ran Phase 5 simulation — two-pass validation:
 **Result: Zero dangerous gaps remaining. Spec suite validated.**
 
 ---
+
+## Turn 6: Commit, Push, and Sprint Close
+
+**William:**
+
+could you commit and push all changes, then close the sprint
+
+**Claude:**
+
+Staged all 37 changed files (folder renames detected by git as renames, not delete+create). Committed with message summarizing the four deliverables: ontology migration, Phase 3b, Phase 4, Phase 5 simulation. Pushed to origin/main.
+
+Sprint close narrative: "Ontology Migration and Spec Completion" — captures the two major arcs (governance migration + spec suite completion). Two discoveries: (1) sales tax must be deferred to settlement because displayed price must match charged price, (2) auction close needs a transitional `closing` state to resolve the grace window conflict. Six key decisions documented. Bootstrap prompt points to spec headers for efficient context restoration.
+
+Memory snapshot: 9 files. Config snapshot: settings.json only (no hook scripts).
+
+---

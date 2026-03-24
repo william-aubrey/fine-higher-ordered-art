@@ -47,3 +47,7 @@
 - [x] Acknowledge agent-directed-work amendment with strategy + agent inventory — 2026-03-20
 - [x] Instantiate CTO agent (`agents/cto/cto-tasks.md`) — 2026-03-21
 - [x] Migrate CTO-scoped tasks from TASKS.md to `agents/cto/cto-tasks.md` — 2026-03-21
+- [x] Process product-ontology-and-skill-update exchange — 2026-03-24
+- [x] Phase 3b SDD: Data and State spec — 2026-03-24
+- [x] Phase 4 SDD: Technical Architecture spec — 2026-03-24
+- [x] Phase 5: Simulation (two-pass validation, 3 dangerous gaps fixed) — 2026-03-24
