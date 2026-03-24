@@ -9,7 +9,7 @@ Fine Higher Ordered Art (FHOA) is the Principal's art business — original acry
 FHOA operates under boundary-enforcement governance:
 
 - **Process definitions** (`company/process/`) — constraints, interfaces, approval gates, enterprise context. Authored by C3PO. Never edit directly; propose changes via `/exchange write proposal`.
-- **Product specifications** (`company/production/auction-platform/specs/`) — product specification, auction design, user journeys. This instance owns and evolves these freely within process constraints.
+- **Product specifications** (`company/production/auction-platform/define/`) — product specification, auction design, user journeys. This instance owns and evolves these freely within process constraints.
 
 ## Product Thesis
 
@@ -45,8 +45,9 @@ company/                  Company layer
     mechanisms/           Process guides (SDD methodology)
   production/
     auction-platform/     Product: Charlotte Collection auction website
-      specs/              Product specification (instance-owned, editable)
-      build/              Build artifacts (code, assets)
+      define/             Product specification (instance-owned, editable)
+      learn/              Research, experiments, prototypes
+      make/               Build artifacts (code, assets)
   sales/                  Sales materials
 agents/                   Agent work products
   clo/library/            CLO deliverables (legal RFPs)
@@ -78,7 +79,7 @@ system/                   Operational records
 
 **Onboarded:** 2026-03-15
 **Stage:** A31 Product Management — Phases 1–2 complete, Phase 3 (Product Design) next
-**Spec progress:** `company/production/auction-platform/specs/spec-progress.md`
+**Spec progress:** `company/production/auction-platform/define/spec-progress.md`
 
 ## Next Steps
 
@@ -87,3 +88,30 @@ system/                   Operational records
 3. Phase 4 SDD: Technical Architecture
 4. Phase 5: Simulate (two-pass validation)
 5. Evaluate tech stack and select payment processor (Phase 4 decisions)
+
+## Active Sprint
+**Sprint:** `SPR-009`
+**Log:** `system/log/2026-03-24.md`
+**Transcript:** `system/transcripts/2026-03-24-hhmm-open-sprint.md`
+
+### Per-Turn Protocol (after every response)
+
+**Step 1 — Reasoning Log** (fast, 1-2 calls)
+Append a 1-2 line entry to the log file. Get timestamp from `powershell -Command "Get-Date -Format 'HH:mm'"` (or `date +%H:%M`). Include `[UPDATED filename]` brackets for any files changed. Write reasoning — what you did, why, what it connects to, what concerned you. No categorization tags. See sprint skill §Log for format.
+
+**Step 2 — Transcript** (after log, 1 append call)
+Append the current turn to the transcript file. Format:
+
+    ## Turn N: [Descriptive Title]
+
+    **William:**
+    [User's message — near-verbatim. Strip <system-reminder>, <ide_selection> (unless explicitly referenced), <ide_opened_file>, tool metadata, permission prompts, skill invocation boilerplate. Preserve voice, punctuation, style.]
+
+    **Claude:**
+    [Your response — intellectual content only. Keep: reasoning, frameworks, arguments, tables, code blocks, data models, key phrases, design decisions, pivots, humor. Strip: "Let me read/write/check..." preamble, tool call results, file confirmations, todo mechanics.]
+
+    ---
+
+Increment turn number sequentially from 1. To find the current count, check the last `## Turn N` heading in the transcript file.
+
+**Do not let the per-turn protocol disrupt primary work.** Both steps together should be 2-3 tool calls appended at the end of your response.

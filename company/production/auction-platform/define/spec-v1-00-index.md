@@ -20,8 +20,8 @@ The numbered spec documents follow the Spec-Driven Development methodology (see 
 | 02e | `spec-v1-02e-journey-gambler.md` | HOW: Gambler (anti-journey) | Complete |
 | 02f | `spec-v1-02f-journey-spectator-journalist.md` | HOW: Spectator & Journalist | Complete |
 | 03a | `spec-v1-03a-site-design.md` | WHAT: Site design — every page and component | Complete |
-| 03b | `spec-v1-03b-data-and-state.md` | WHAT: Data schemas and auction state | Not started |
-| 04 | `spec-v1-04-technical-architecture.md` | BUILD: Infrastructure, APIs, deployment | Not started |
+| 03b | `spec-v1-03b-data-and-state.md` | WHAT: Data schemas and auction state | Complete |
+| 04 | `spec-v1-04-technical-architecture.md` | BUILD: Infrastructure, APIs, deployment | Complete |
 
 ### Archived References
 

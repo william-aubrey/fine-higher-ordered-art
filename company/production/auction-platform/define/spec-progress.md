@@ -18,9 +18,9 @@
 | how | 02e | `spec-v1-02e-journey-gambler.md` | complete | 2026-03-15 |
 | how | 02f | `spec-v1-02f-journey-spectator-journalist.md` | complete | 2026-03-15 |
 | what | 03a | `spec-v1-03a-site-design.md` | complete | 2026-03-21 |
-| what | 03b | `spec-v1-03b-data-and-state.md` | pending | — |
-| build | 04 | `spec-v1-04-technical-architecture.md` | pending | — |
-| simulate | — | — | pending | — |
+| what | 03b | `spec-v1-03b-data-and-state.md` | complete | 2026-03-24 |
+| build | 04 | `spec-v1-04-technical-architecture.md` | complete | 2026-03-24 |
+| simulate | — | `simulation-v1-pass1.md`, `simulation-v1-pass2.md` | complete | 2026-03-24 |
 
 ## Supporting Documents (Archived)
 
@@ -28,8 +28,8 @@ These documents predate the spec suite. Their content is authoritative and will 
 
 | Document | Original Location | Archived To | What It Covers |
 |---|---|---|---|
-| `auction-mechanism.md` | `specs/` | `company/production/auction-platform/specs/auction-mechanism.md` | Tier structure, bidding rules, outbid rewards, WTA, settlement, thresholds |
-| `srs-fine-higher-ordered-art.md` | `specs/` | `company/production/auction-platform/specs/srs-fine-higher-ordered-art.md` | C3PO onboarding seed — superseded by spec suite |
+| `auction-mechanism.md` | `specs/` (pre-migration) | `company/production/auction-platform/define/auction-mechanism.md` | Tier structure, bidding rules, outbid rewards, WTA, settlement, thresholds |
+| `srs-fine-higher-ordered-art.md` | `specs/` (pre-migration) | `company/production/auction-platform/define/srs-fine-higher-ordered-art.md` | C3PO onboarding seed — superseded by spec suite |
 
 ## Phase 3 Scope — Site Design (03a)
 
@@ -94,10 +94,27 @@ These are hard prerequisites for *launch*, not for spec writing. Phase 3 and 4 w
 
 | Pass | Date | Gaps Found | Dangerous | Status |
 |---|---|---|---|---|
-| *(empty until simulate is run)* | | | | |
+| Pass 1 (Sprint-level) | 2026-03-24 | 14 | 3 | Complete — gaps fixed |
+| Pass 2 (Function-level) | 2026-03-24 | 17 | 3 (same 3) | Complete — gaps fixed |
 
 ## Gap Tracker
 
 | # | Gap | Severity | Phase | Document | Status |
 |---|---|---|---|---|---|
-| *(empty until simulate is run)* | | | | | |
+| SIM-01 | Sales tax handling — bid charge amount undefined | Dangerous | build | spec-v1-04 §6.5 | **Fixed** — tax collected at settlement, not bid placement |
+| SIM-02 | Admin endpoint for lawyer-mediated bids — mentioned but not specified | Dangerous | build | spec-v1-04 §4.3 | **Fixed** — POST /api/admin/bids fully specified |
+| SIM-03 | Auction close trigger + grace window — mechanism unspecified | Dangerous | build + what | spec-v1-04 §9.5, spec-v1-03b §8.2 | **Fixed** — Vercel Cron + `closing` transitional status added |
+| SIM-04 | ORM choice (Prisma vs Drizzle) | Safe | build | spec-v1-04 | Open — agent picks |
+| SIM-05 | Image processing pipeline for 4 sizes | Safe | build | spec-v1-04 | Open — standard pattern |
+| SIM-06 | Email verification mechanism | Safe | build | spec-v1-04 | Open — magic link default |
+| SIM-07 | Password reset flow | Safe | build | spec-v1-04 | Open — notable omission |
+| SIM-08 | Apple Sign-in setup details | Safe | build | spec-v1-04 | Open — Apple docs |
+| SIM-09 | Admin UI scope and design | Safe | what/build | — | Open — agent builds minimal |
+| SIM-10 | Background notification processor choice | Safe | build | spec-v1-04 | Open — agent picks |
+| SIM-11 | Supabase vs Neon + Ably | Safe | build | spec-v1-04 | Open — TECH-04 |
+| SIM-12 | Payment processing timeout sweep | Safe | build | spec-v1-04 | Open — cron pattern |
+| SIM-13 | Slug collision for duplicate titles | Safe | what | spec-v1-03b | Open — unique constraint |
+| SIM-14 | Headless CMS vs markdown | Safe | build | spec-v1-04 | Open — TECH-03 |
+| SIM-15 | Stripe Connect vs direct | Safe | build | spec-v1-04 | Open — TECH-01 |
+| SIM-16 | Settlement disbursement automation | Safe | build | spec-v1-04 | Open — TECH-05 |
+| SIM-17 | Certificate of authenticity PDF template | Safe | build | — | Open — agent designs |
