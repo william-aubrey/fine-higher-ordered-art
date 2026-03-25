@@ -105,7 +105,7 @@ These are hard prerequisites for *launch*, not for spec writing. Phase 3 and 4 w
 | SIM-02 | Admin endpoint for lawyer-mediated bids — mentioned but not specified | Dangerous | build | spec-v1-04 §4.3 | **Fixed** — POST /api/admin/bids fully specified |
 | SIM-03 | Auction close trigger + grace window — mechanism unspecified | Dangerous | build + what | spec-v1-04 §9.5, spec-v1-03b §8.2 | **Fixed** — Vercel Cron + `closing` transitional status added |
 | SIM-04 | ORM choice (Prisma vs Drizzle) | Safe | build | spec-v1-04 | Open — agent picks |
-| SIM-05 | Image processing pipeline for 4 sizes | Safe | build | spec-v1-04 | Open — standard pattern |
+| SIM-05 | Image processing pipeline for 4 sizes | Safe | build | spec-v1-04 §13.2 | **Resolved** — Vercel Blob + Next.js Image (on-demand resizing, 2 stored files per painting) |
 | SIM-06 | Email verification mechanism | Safe | build | spec-v1-04 | Open — magic link default |
 | SIM-07 | Password reset flow | Safe | build | spec-v1-04 | Open — notable omission |
 | SIM-08 | Apple Sign-in setup details | Safe | build | spec-v1-04 | Open — Apple docs |

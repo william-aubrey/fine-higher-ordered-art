@@ -59,10 +59,8 @@ A painting is the core product unit. There are exactly 52 paintings in the Charl
 | `shipping_estimate_high_cents` * | integer | High end of shipping estimate for size category |
 | `narrative` | text | Written description: story, emotion, context. 1–3 paragraphs by the artist. |
 | `video_url` | url | Embedded video URL (YouTube, Vimeo). Nullable — not all paintings have video. |
-| `image_thumbnail_url` * | url | 400px wide, WebP. Gallery scroller. |
-| `image_primary_url` * | url | 1200px wide, WebP. Image Page primary. |
-| `image_full_url` * | url | Original resolution. Lightbox on demand. |
-| `image_og_url` * | url | 1200×630px. Open Graph social previews. |
+| `image_source_url` * | url | Full-resolution original in Vercel Blob. Next.js Image component handles resizing/format conversion on demand (see 04 §13.2). |
+| `image_og_url` * | url | Pre-generated 1200×630px for Open Graph social previews. |
 | `alt_text` * | string | Descriptive alt text: "[Title], acrylic on canvas, [W]" × [H]"" |
 | `created_at` * | datetime | Record creation timestamp |
 

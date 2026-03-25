@@ -19,6 +19,11 @@
 - [ ] Record video content — artist and others discussing paintings
 - [ ] Research art-safe shipping boxes — FedEx and UPS options and pricing by painting size
 
+### Architecture
+- [ ] Rework Phase 4 architecture: gallery (static content) vs auction engine (database/API) separation
+- [ ] Resolve TECH-04: skip real-time, use polling
+- [ ] Resolve TECH-03: headless CMS vs markdown (needs William's input)
+
 ### Agent Infrastructure
 - [ ] Instantiate CAO agent (`agents/cao/cao-tasks.md`) — intake routing, governance coordination
 - [ ] Build feature roadmap from ICP/JTBD output (CPO — instantiate when needed)
@@ -51,3 +56,6 @@
 - [x] Phase 3b SDD: Data and State spec — 2026-03-24
 - [x] Phase 4 SDD: Technical Architecture spec — 2026-03-24
 - [x] Phase 5: Simulation (two-pass validation, 3 dangerous gaps fixed) — 2026-03-24
+- [x] Acknowledge exchange skill bugfix from C3PO — 2026-03-24
+- [x] Review 03a site design with William (approved) — 2026-03-24
+- [x] Write §13.2 image infrastructure spec (closes SIM-05) — 2026-03-24

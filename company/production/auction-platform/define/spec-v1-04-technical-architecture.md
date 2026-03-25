@@ -57,7 +57,7 @@ The platform is a **static frontend** (server-side rendered at build time + clie
 | **Email** | Resend or Postmark | Transactional email with high deliverability |
 | **SMS** | Twilio | Outbid and closing warning notifications |
 | **CDN / Hosting** | Vercel | Global CDN, edge functions, zero-config deployment from Git |
-| **Image storage** | Cloudflare R2 or Vercel Blob | 52 paintings × 4 sizes = 208 images. CDN-backed. |
+| **Image storage** | Vercel Blob + Next.js Image Optimization | 52 source images + 52 OG variants. On-demand resizing/format conversion. See §13.2. |
 | **Monitoring** | Vercel Analytics + Sentry | Error tracking, performance monitoring |
 
 ### 2.2 Service Boundaries
@@ -122,10 +122,8 @@ CREATE TABLE paintings (
   shipping_estimate_high_cents INTEGER NOT NULL,
   narrative       TEXT,
   video_url       VARCHAR(500),
-  image_thumbnail_url VARCHAR(500) NOT NULL,
-  image_primary_url   VARCHAR(500) NOT NULL,
-  image_full_url      VARCHAR(500) NOT NULL,
-  image_og_url        VARCHAR(500) NOT NULL,
+  image_source_url    VARCHAR(500) NOT NULL,   -- full-res original in Vercel Blob (§13.2)
+  image_og_url        VARCHAR(500) NOT NULL,   -- pre-generated 1200x630 for meta tags (§13.2.3)
   alt_text        VARCHAR(500) NOT NULL,
   created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
@@ -338,8 +336,7 @@ Returns all 52 paintings with current bid status.
       "shippingEstimateHighCents": 50000,
       "narrative": "...",
       "videoUrl": "https://...|null",
-      "imageThumbnailUrl": "https://...",
-      "imagePrimaryUrl": "https://...",
+      "imageSourceUrl": "https://...",
       "imageOgUrl": "https://...",
       "altText": "Acceptance, acrylic on canvas, 48\" × 72\"",
       "currentState": "tier2_held",
@@ -362,7 +359,7 @@ Returns all 52 paintings with current bid status.
 
 Returns a single painting with full detail.
 
-**Response: 200** — Same shape as array item above plus `imageFullUrl`.
+**Response: 200** — Same shape as array item above. (The `imageSourceUrl` serves all sizes via Next.js Image component — no separate full-resolution URL needed.)
 
 **Response: 404** — `{ "error": "Painting not found" }`
 
@@ -510,7 +507,7 @@ Returns the authenticated bidder's complete auction state.
   "activeBids": [
     {
       "bidId": "uuid",
-      "painting": { "slug": "acceptance", "title": "Acceptance", "imageThumbnailUrl": "..." },
+      "painting": { "slug": "acceptance", "title": "Acceptance", "imageSourceUrl": "..." },
       "tier": "tier2",
       "amountCents": 3456000,
       "placedAt": "2026-07-15T14:30:00Z"
@@ -519,7 +516,7 @@ Returns the authenticated bidder's complete auction state.
   "outbidHistory": [
     {
       "bidId": "uuid",
-      "painting": { "slug": "anger", "title": "Anger", "imageThumbnailUrl": "..." },
+      "painting": { "slug": "anger", "title": "Anger", "imageSourceUrl": "..." },
       "tier": "tier1",
       "amountCents": 345600,
       "refundedAt": "2026-08-01T10:00:00Z",
@@ -1113,14 +1110,132 @@ Not a primary concern — bid volume is low (dozens to hundreds over months). Ho
 Before auction launch, the 52 paintings must be loaded into the database with:
 
 1. **Dimensions** — from William's physical inventory (AM-OQ-04 — pending)
-2. **Images** — professionally photographed, processed into 4 sizes (thumbnail, primary, full, OG)
+2. **Images** — professionally photographed, uploaded as full-resolution source + OG variant (§13.2.4)
 3. **Narratives** — written by William
 4. **Display order** — curated by William
 5. **Series assignment** — Grief Series paintings linked to series record
 
 Loading method: a seed script (`scripts/seed-paintings.ts`) that reads a structured data file (JSON or CSV) and inserts records. Run once before launch; updates via admin API thereafter.
 
-### 13.2 Static Content
+### 13.2 Image Infrastructure
+
+#### 13.2.1 Decision: Vercel Blob + Next.js Image Optimization
+
+Store **one source image per painting** (the full-resolution original). Let the Next.js `<Image>` component handle resizing, format conversion (WebP/AVIF), and CDN caching automatically. This eliminates the need to pre-process and store 4 separate image files per painting.
+
+**Rationale:**
+- 52 source images is well within Vercel's free optimization tier (1,000 source images included with Pro)
+- Next.js Image generates responsive variants on first request, then caches at the edge — subsequent loads are CDN-fast
+- Eliminates a manual processing pipeline (no Sharp scripts, no build-time image generation)
+- Format negotiation is automatic — modern browsers get AVIF, older browsers get WebP, fallback to JPEG
+- The `sizes` prop + `srcset` output means the browser downloads only the size it needs per viewport
+- Vercel Blob is the simplest storage option: upload via API or dashboard, get a permanent URL, served from Vercel's edge network
+
+**What about the 4 sizes in 03a §19.2?** They become `<Image>` component configurations, not stored files:
+
+| 03a Context | Implementation |
+|---|---|
+| Gallery scroller thumbnail (400px) | `<Image width={400} ... sizes="200px" />` — Next.js generates on demand |
+| Image Page primary (1200px) | `<Image width={1200} ... sizes="(max-width: 768px) 100vw, 70vw" />` |
+| Lightbox full-resolution | `<Image fill quality={95} ... />` — loads original at device resolution |
+| Open Graph (1200×630) | **Pre-generated** — see §13.2.3. OG images cannot use `<Image>` component |
+
+#### 13.2.2 Storage Architecture
+
+```
+Vercel Blob Storage
+└── paintings/
+    ├── acceptance.jpg          ← full-resolution source (e.g., 4000×3000px, ~3-8MB)
+    ├── acceptance-og.jpg       ← pre-generated OG image (1200×630, ~150KB)
+    ├── anger.jpg
+    ├── anger-og.jpg
+    └── ... (52 paintings × 2 files = 104 files)
+
+Total storage: ~200-400MB (52 full-res sources + 52 OG images)
+```
+
+**URL pattern:** `https://[blob-store-id].public.blob.vercel-storage.com/paintings/[slug].jpg`
+
+**Database schema change** — simplify from 4 URL columns to 2:
+
+```sql
+-- Replace:
+--   image_thumbnail_url VARCHAR(500) NOT NULL,
+--   image_primary_url   VARCHAR(500) NOT NULL,
+--   image_full_url      VARCHAR(500) NOT NULL,
+--   image_og_url        VARCHAR(500) NOT NULL,
+
+-- With:
+  image_source_url    VARCHAR(500) NOT NULL,   -- full-res original in Vercel Blob
+  image_og_url        VARCHAR(500) NOT NULL,   -- pre-generated 1200x630 for meta tags
+```
+
+The `<Image>` component takes `image_source_url` as `src` and handles all sizing. This is cleaner: the database stores what's stored, not what's derived.
+
+#### 13.2.3 OG Image Generation
+
+Open Graph meta tags require a static image URL — they cannot use Next.js Image optimization. OG images are pre-generated once per painting during the catalog loading step (§13.1).
+
+**Pipeline:**
+
+1. Source image uploaded to Vercel Blob
+2. A one-time script (`scripts/generate-og-images.ts`) reads each source, crops/scales to 1200×630, optimizes as JPEG (quality 85), and uploads to Vercel Blob as `[slug]-og.jpg`
+3. The `image_og_url` column is populated during seeding
+
+**Alternative for dynamic OG:** Vercel OG (`@vercel/og`) can generate OG images at the edge using the painting image + overlay text (title, bid status). This enables dynamic OG descriptions that show current bid state in the preview image itself. Cost: negligible (edge function invocation). Decision deferred to build time — static OG images are sufficient for launch, dynamic is a polish feature.
+
+#### 13.2.4 Upload Workflow
+
+**Pre-launch (bulk load):**
+
+1. William photographs all 52 paintings (high-res, color-accurate, consistent lighting)
+2. Photos named by slug: `acceptance.jpg`, `anger.jpg`, etc.
+3. Upload script (`scripts/upload-images.ts`) iterates the folder:
+   - Validates image dimensions (minimum 2000px on shortest side)
+   - Validates color profile (sRGB — converts if needed)
+   - Uploads source to Vercel Blob via `@vercel/blob` SDK
+   - Generates + uploads OG variant
+   - Returns URL mapping for database seeding
+4. Seed script (§13.1) uses the URL mapping to populate `image_source_url` and `image_og_url`
+
+**Post-launch (individual updates via admin):**
+- Admin API endpoint `PATCH /api/admin/paintings/[slug]` accepts a new image file
+- Server-side: upload to Blob, generate OG, update DB URLs
+- Next.js Image cache automatically serves the new image (Blob URL changes)
+
+#### 13.2.5 Color Accuracy
+
+The paintings are the product. Color accuracy is non-negotiable.
+
+| Concern | Mitigation |
+|---|---|
+| Photography color cast | William: photograph under consistent, neutral (5000K-5500K) lighting. Include color checker card in one reference shot per session. |
+| Color profile loss | Upload script validates sRGB profile. Non-sRGB images are converted via Sharp before upload. |
+| Compression artifacts | Next.js Image default quality is 75 — override to `quality={85}` for painting images. Lightbox uses `quality={95}`. |
+| Format conversion | WebP and AVIF preserve color fidelity at the quality levels specified. No concern at q85+. |
+| Display calibration | Out of scope — viewer's monitor is their responsibility. But sRGB is the web standard and renders consistently across calibrated and uncalibrated displays. |
+
+#### 13.2.6 Performance
+
+| Metric | Target | How |
+|---|---|---|
+| Gallery scroller LCP | < 2.0s | First 5 images preloaded (`priority` prop), remaining lazy-loaded via intersection observer |
+| Image Page LCP | < 2.5s | Primary image uses `priority` prop (preloaded), lightbox loaded on click |
+| Total page weight (Image Page) | < 500KB initial | Primary image ~150KB (1200px WebP q85), everything else deferred |
+| CDN hit rate | > 95% after warm-up | 52 paintings × ~3 popular sizes = ~156 cached variants. Vercel edge caches indefinitely until source changes. |
+
+#### 13.2.7 Cost
+
+| Item | Cost |
+|---|---|
+| Vercel Blob storage (400MB) | Included in Pro plan (1GB free) |
+| Vercel Image Optimization (52 source images) | Included in Pro plan (1,000 free) |
+| Bandwidth (CDN-served images) | Included in Pro plan (1TB/month) |
+| **Total image infrastructure cost** | **$0 incremental** (covered by existing Vercel Pro $20/month) |
+
+This closes **SIM-05** (image processing pipeline for 4 sizes) and resolves the image storage decision from §2.1 line 60.
+
+### 13.3 Static Content
 
 Site copy (homepage intro, auction explanation, How Bidding Works, About the Artist) is stored as markdown files in the codebase and rendered at build time. Updates require a code deployment (which is instant on Vercel).
 
@@ -1138,7 +1253,7 @@ Alternative: headless CMS (Sanity, Contentful) for non-technical content editing
 | **Resend** | Free tier (3,000 emails/month) | $0 |
 | **Twilio** | Pay-per-SMS | ~$0.01/SMS × estimated 500 SMS = ~$5 |
 | **Domain** | fhoa.org renewal | ~$12/year |
-| **Cloudflare R2** | Free tier (10GB) | $0 (208 images ≈ 500MB) |
+| **Vercel Blob** | Included in Pro (1GB) | $0 (104 images ≈ 400MB) — see §13.2.7 |
 | **Sentry** | Free tier | $0 |
 | **Total** | | **~$25–$50/month** during active auction |
 

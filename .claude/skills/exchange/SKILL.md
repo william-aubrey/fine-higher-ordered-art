@@ -291,11 +291,12 @@ After the Principal reviews and approves the package, deliver it automatically.
    ```
 
 **Instance context (outbound to C3PO):**
-1. Copy the exchange folder to C3PO:
+1. **Determine your C3PO identity.** Get the current repo path (project root / working directory). Find the matching row in the Instance Repo Registry (Step 1) by comparing against the Repo Path column. The corresponding Instance Folder value is `[this-instance]`. If no match is found, ask the Principal for the C3PO folder name.
+2. Copy the exchange folder to C3PO:
    ```bash
    cp -r "system/exchange/[folder-name]/" "G:\My Drive\A0 C3PO\instances\[this-instance]\exchange\[folder-name]/"
    ```
-2. Verify and report as above.
+3. Verify and report as above.
 
 **If the target repo path is not in the registry**, report the package as ready and ask the Principal to deliver manually (fallback to old behavior).
 

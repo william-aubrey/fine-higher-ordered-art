@@ -83,8 +83,9 @@ system/                   Operational records
 
 ## Next Steps
 
-1. Begin Phase 3 SDD with `/spec what` — detailed site design (`spec-v1-03a-site-design.md`)
-2. Complete Phase 3 data and state specification (`spec-v1-03b-data-and-state.md`)
-3. Phase 4 SDD: Technical Architecture
-4. Phase 5: Simulate (two-pass validation)
-5. Evaluate tech stack and select payment processor (Phase 4 decisions)
+1. Rework Phase 4 architecture: gallery (static content) vs auction engine (database/API) separation
+2. Resolve TECH-04: skip real-time, use polling
+3. Resolve TECH-03: Headless CMS vs markdown (needs William's input)
+4. Begin build — Sprint 1: Project scaffolding
+
+
