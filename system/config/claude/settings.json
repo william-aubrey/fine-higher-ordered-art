@@ -8,7 +8,10 @@
       "Write",
       "NotebookEdit",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Glob",
+      "Grep",
+      "Agent"
     ]
   },
   "hooks": {

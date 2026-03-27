@@ -19,7 +19,7 @@
 | how | 02f | `spec-v1-02f-journey-spectator-journalist.md` | complete | 2026-03-15 |
 | what | 03a | `spec-v1-03a-site-design.md` | complete | 2026-03-21 |
 | what | 03b | `spec-v1-03b-data-and-state.md` | complete | 2026-03-24 |
-| build | 04 | `spec-v1-04-technical-architecture.md` | complete | 2026-03-24 |
+| build | 04 | `spec-v1-04-technical-architecture.md` | complete (v3 — AWS) | 2026-03-26 |
 | simulate | — | `simulation-v1-pass1.md`, `simulation-v1-pass2.md` | complete | 2026-03-24 |
 
 ## Supporting Documents (Archived)
@@ -111,10 +111,10 @@ These are hard prerequisites for *launch*, not for spec writing. Phase 3 and 4 w
 | SIM-08 | Apple Sign-in setup details | Safe | build | spec-v1-04 | Open — Apple docs |
 | SIM-09 | Admin UI scope and design | Safe | what/build | — | Open — agent builds minimal |
 | SIM-10 | Background notification processor choice | Safe | build | spec-v1-04 | Open — agent picks |
-| SIM-11 | Supabase vs Neon + Ably | Safe | build | spec-v1-04 | Open — TECH-04 |
+| SIM-11 | Supabase vs Neon + Ably | Safe | build | spec-v1-04 | **Resolved** — RDS PostgreSQL + RDS Proxy (v3: AWS consolidation). Polling replaces WebSocket. No real-time infrastructure. |
 | SIM-12 | Payment processing timeout sweep | Safe | build | spec-v1-04 | Open — cron pattern |
 | SIM-13 | Slug collision for duplicate titles | Safe | what | spec-v1-03b | Open — unique constraint |
-| SIM-14 | Headless CMS vs markdown | Safe | build | spec-v1-04 | Open — TECH-03 |
+| SIM-14 | Headless CMS vs markdown | Safe | build | spec-v1-04 | **Resolved** — Markdown in repo, edited in VS Code. No CMS. |
 | SIM-15 | Stripe Connect vs direct | Safe | build | spec-v1-04 | Open — TECH-01 |
 | SIM-16 | Settlement disbursement automation | Safe | build | spec-v1-04 | Open — TECH-05 |
 | SIM-17 | Certificate of authenticity PDF template | Safe | build | — | Open — agent designs |

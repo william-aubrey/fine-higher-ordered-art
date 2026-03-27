@@ -83,9 +83,32 @@ system/                   Operational records
 
 ## Next Steps
 
-1. Rework Phase 4 architecture: gallery (static content) vs auction engine (database/API) separation
-2. Resolve TECH-04: skip real-time, use polling
-3. Resolve TECH-03: Headless CMS vs markdown (needs William's input)
-4. Begin build — Sprint 1: Project scaffolding
+1. Begin build — Sprint 1: Project scaffolding (PROD-004)
 
+## Active Sprint
+**Sprint:** `SPR-013`
+**Log:** `system/log/2026-03-26.md`
+**Transcript:** `system/transcripts/2026-03-26-hhmm-open-sprint.md`
+
+### Per-Turn Protocol (after every response)
+
+**Step 1 — Reasoning Log** (fast, 1-2 calls)
+Append a 1-2 line entry to the log file. Get timestamp from `powershell -Command "Get-Date -Format 'HH:mm'"` (or `date +%H:%M`). Include `[UPDATED filename]` brackets for any files changed. Write reasoning — what you did, why, what it connects to, what concerned you. No categorization tags. See sprint skill §Log for format.
+
+**Step 2 — Transcript** (after log, 1 append call)
+Append the current turn to the transcript file. Format:
+
+    ## Turn N: [Descriptive Title]
+
+    **William:**
+    [User's message — near-verbatim. Strip <system-reminder>, <ide_selection> (unless explicitly referenced), <ide_opened_file>, tool metadata, permission prompts, skill invocation boilerplate. Preserve voice, punctuation, style.]
+
+    **Claude:**
+    [Your response — intellectual content only. Keep: reasoning, frameworks, arguments, tables, code blocks, data models, key phrases, design decisions, pivots, humor. Strip: "Let me read/write/check..." preamble, tool call results, file confirmations, todo mechanics.]
+
+    ---
+
+Increment turn number sequentially from 1. To find the current count, check the last `## Turn N` heading in the transcript file.
+
+**Do not let the per-turn protocol disrupt primary work.** Both steps together should be 2-3 tool calls appended at the end of your response.
 
