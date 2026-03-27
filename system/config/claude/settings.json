@@ -1,5 +1,4 @@
 {
-  "effortLevel": "max",
   "permissions": {
     "allow": [
       "Bash",
@@ -11,7 +10,10 @@
       "WebSearch",
       "Glob",
       "Grep",
-      "Agent"
+      "Agent",
+      "Edit(/.claude/skills/spec/**)",
+      "Edit(/.claude/skills/onboard/**)",
+      "Edit(/.claude/skills/press/**)"
     ]
   },
   "hooks": {

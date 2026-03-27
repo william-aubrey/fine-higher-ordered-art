@@ -34,3 +34,6 @@ completed_date,sprint_id,area,task,narrative
 2026-03-25,SPR-012,company/production,"PROD-001: Rework Phase 4 architecture: gallery (static content) vs auction engine (database/API) separation",
 2026-03-25,SPR-012,company/production,"PROD-002: Resolve TECH-04: skip real-time, use polling",
 2026-03-25,SPR-012,company/production,"PROD-008: Design real-time bid status system (replaced by polling — 10 lines of client code)",
+2026-03-26,SPR-013,company/production,"PROD-005: Evaluate tech stack — Next.js (static gallery + serverless auction engine) confirmed",2026-03-26-2121-aws-migration-and-spec-v3.md
+2026-03-26,SPR-013,company/production,"PROD-006: Select payment processor — Stripe (only non-AWS vendor, PCI-compliant per HC-05)",2026-03-26-2121-aws-migration-and-spec-v3.md
+2026-03-26,SPR-013,company/production,"PROD-007: Select hosting/deployment platform — AWS Amplify + RDS + S3 + SES + SNS",2026-03-26-2121-aws-migration-and-spec-v3.md

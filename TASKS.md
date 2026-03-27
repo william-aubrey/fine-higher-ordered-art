@@ -7,9 +7,6 @@ Completed tasks are archived to `system/log/completed-tasks.csv`.
 
 ### company/production
 - [ ] PROD-004: Begin build — Sprint 1: Project scaffolding
-- [ ] PROD-005: Evaluate tech stack — static site + serverless auction logic vs. full web app
-- [ ] PROD-006: Select payment processor (Stripe, Square, etc.) — must be PCI-compliant per HC-05; Stripe viable for physical art
-- [ ] PROD-007: Select hosting / deployment platform
 - [ ] PROD-009: Implement Open Graph / social meta tags for link previews (Spectator/Journalist discovery)
 - [ ] PROD-010: Inventory all 52 paintings with exact dimensions — determines aggregate threshold and all tier prices (blocks launch)
 - [ ] PROD-011: Photograph existing paintings (high-resolution, color-accurate)

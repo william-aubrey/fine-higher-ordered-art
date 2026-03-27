@@ -501,3 +501,38 @@ Rewrote spec-v1-04 from v2 to v3 (AWS Migration). 15 sections touched, 20 checkl
 Updated gap assessment checklist: all 20 items ✓. Updated spec-progress: Phase 4 now shows "v3 — AWS."
 
 ---
+
+## Turn 15: Commit and Push
+
+**William:**
+
+can you commit and push all changes?
+
+**Claude:**
+
+Staged all files (27 total), committed as `a720f22`: "SPR-012 close + SPR-013: AWS migration, Phase 4 spec v3". Pushed to main. 4,422 insertions.
+
+---
+
+## Turn 16: Sprint Close
+
+**William:**
+
+/sprint close
+
+**Claude:**
+
+Closed SPR-013. Session name: "AWS Migration and Spec v3."
+
+**Summary:** Pivoted the entire infrastructure from Vercel/Neon/Resend/Twilio to AWS (Amplify/RDS/SES/SNS). Phase 4 spec rewritten v2→v3 (15 sections, 20 checklist items). Four research documents produced (Truist banking, AWS hosting, attorney evaluation, gap assessment). Three tasks closed: PROD-005 (tech stack), PROD-006 (Stripe), PROD-007 (AWS Amplify).
+
+**Discoveries:**
+1. William's questions as architecture improvements — "do we really need this?" consistently eliminated over-engineering (notification processor, every-minute cron, WAF)
+2. AWS Free Tier covers entire auction period — cost story changes from "$20-30/mo ongoing" to "near-zero during, $0.51/mo forever after"
+3. Snowflake Hybrid Tables — real OLTP capability but wrong fit for FHOA (cost, Lambda overhead, limitations)
+
+**Key Decisions:** Full AWS no exceptions (phData partner, skills transfer), RDS+Proxy over Neon/Snowflake/Aurora, inline notifications over queue+processor, daily cron over every-minute, Sharp pre-processing over on-demand optimization, DB rate limiting over WAF.
+
+**Next task:** PROD-004 — scaffold Next.js in make/, configure for Amplify, set up markdown content layer, render a static painting page locally.
+
+---
